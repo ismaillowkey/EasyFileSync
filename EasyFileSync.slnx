@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/EasyFileSync.App/EasyFileSync.App.csproj" />
+    <Project Path="src/EasyFileSync.Core/EasyFileSync.Core.csproj" />
+  </Folder>
+</Solution>

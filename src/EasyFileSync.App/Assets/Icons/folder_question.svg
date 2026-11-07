@@ -1,0 +1,5 @@
+<svg width="26" height="24" viewBox="0 0 26 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M2 5C2 3.89543 2.89543 3 4 3H9.58579C10.1162 3 10.6249 3.21071 11 3.58579L13.4142 6H22C23.1046 6 24 6.89543 24 8V19C24 20.1046 23.1046 21 22 21H4C2.89543 21 2 20.1046 2 19V5Z" fill="#FFEA9C" stroke="#E8C346" stroke-width="1.2"/>
+  <path d="M2 8.5H24V19C24 20.1046 23.1046 21 22 21H4C2.89543 21 2 20.1046 2 19V8.5Z" fill="#FFF2B8"/>
+  <text x="13" y="17.5" font-family="'Segoe UI', Inter, sans-serif" font-size="11" font-weight="bold" fill="#202020" text-anchor="middle">?</text>
+</svg>

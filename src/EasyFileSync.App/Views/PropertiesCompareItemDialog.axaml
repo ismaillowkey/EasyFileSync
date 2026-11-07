@@ -1,0 +1,95 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="EasyFileSync.App.Views.PropertiesCompareItemDialog"
+        Title="Properties"
+        Width="520" Height="420"
+        MinWidth="520" MinHeight="420"
+        MaxWidth="520" MaxHeight="420"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        Background="#FFFFFF"
+        FontFamily="Segoe UI, Inter, Arial, sans-serif">
+
+  <Grid RowDefinitions="*,Auto">
+    <ScrollViewer Grid.Row="0" Margin="20,16">
+      <StackPanel Spacing="14">
+
+        <!-- Header Item Name & Type -->
+        <Border Background="#F2F6FA" BorderBrush="#D0DFEE" BorderThickness="1" CornerRadius="4" Padding="12,10">
+          <Grid ColumnDefinitions="Auto,*">
+            <TextBlock Text="📄" FontSize="26" VerticalAlignment="Center" Margin="0,0,12,0" Name="TxtHeaderIcon" />
+            <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+              <TextBlock Name="TxtDisplayName" Text="File Name" FontSize="13.5" FontWeight="Bold" Foreground="#1F2937" TextTrimming="CharacterEllipsis" />
+              <TextBlock Name="TxtRelativePath" Text="relative/path/to/item" FontSize="11" Foreground="#6B7280" TextTrimming="CharacterEllipsis" />
+            </StackPanel>
+          </Grid>
+        </Border>
+
+        <!-- Sisi Kiri Info -->
+        <Border Background="#FAFAFA" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="4" Padding="12,8">
+          <StackPanel Spacing="4">
+            <TextBlock Text="LEFT FOLDER" FontSize="10.5" FontWeight="Bold" Foreground="#4B5563" />
+            <Grid ColumnDefinitions="75,*" Margin="0,2">
+              <TextBlock Grid.Column="0" Text="Path:" FontSize="11" Foreground="#6B7280" />
+              <TextBlock Name="TxtLeftPath" Grid.Column="1" Text="D:\Folder\..." FontSize="11" Foreground="#111827" TextWrapping="Wrap" />
+            </Grid>
+            <Grid ColumnDefinitions="75,*" Margin="0,2">
+              <TextBlock Grid.Column="0" Text="Size:" FontSize="11" Foreground="#6B7280" />
+              <TextBlock Name="TxtLeftSize" Grid.Column="1" Text="0 KB" FontSize="11" Foreground="#111827" />
+            </Grid>
+            <Grid ColumnDefinitions="75,*" Margin="0,2">
+              <TextBlock Grid.Column="0" Text="Modified:" FontSize="11" Foreground="#6B7280" />
+              <TextBlock Name="TxtLeftModified" Grid.Column="1" Text="-" FontSize="11" Foreground="#111827" />
+            </Grid>
+          </StackPanel>
+        </Border>
+
+        <!-- Sisi Kanan Info -->
+        <Border Background="#FAFAFA" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="4" Padding="12,8">
+          <StackPanel Spacing="4">
+            <TextBlock Text="RIGHT FOLDER" FontSize="10.5" FontWeight="Bold" Foreground="#4B5563" />
+            <Grid ColumnDefinitions="75,*" Margin="0,2">
+              <TextBlock Grid.Column="0" Text="Path:" FontSize="11" Foreground="#6B7280" />
+              <TextBlock Name="TxtRightPath" Grid.Column="1" Text="D:\Folder\..." FontSize="11" Foreground="#111827" TextWrapping="Wrap" />
+            </Grid>
+            <Grid ColumnDefinitions="75,*" Margin="0,2">
+              <TextBlock Grid.Column="0" Text="Size:" FontSize="11" Foreground="#6B7280" />
+              <TextBlock Name="TxtRightSize" Grid.Column="1" Text="0 KB" FontSize="11" Foreground="#111827" />
+            </Grid>
+            <Grid ColumnDefinitions="75,*" Margin="0,2">
+              <TextBlock Grid.Column="0" Text="Modified:" FontSize="11" Foreground="#6B7280" />
+              <TextBlock Name="TxtRightModified" Grid.Column="1" Text="-" FontSize="11" Foreground="#111827" />
+            </Grid>
+          </StackPanel>
+        </Border>
+
+        <!-- Status Perbandingan -->
+        <Border Background="#F9FAFB" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="4" Padding="12,8">
+          <Grid ColumnDefinitions="85,*">
+            <TextBlock Grid.Column="0" Text="Comparison:" FontSize="11" FontWeight="SemiBold" Foreground="#4B5563" VerticalAlignment="Center" />
+            <TextBlock Name="TxtComparisonStatus" Grid.Column="1" Text="Status" FontSize="11.5" FontWeight="Bold" VerticalAlignment="Center" />
+          </Grid>
+        </Border>
+
+      </StackPanel>
+    </ScrollViewer>
+
+    <!-- Bottom Buttons Bar -->
+    <Border Grid.Row="1" Background="#EDF1F7" BorderBrush="#D8DFE8" BorderThickness="0,1,0,0" Padding="14,10">
+      <Grid ColumnDefinitions="Auto,*,Auto">
+        <!-- Explorer Buttons -->
+        <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8">
+          <Button Name="BtnOpenLeft" Content="Open Left in Explorer" Height="28" FontSize="11" Padding="10,2"
+                  Background="#FFFFFF" BorderBrush="#C5CCD6" BorderThickness="1" CornerRadius="3" />
+          <Button Name="BtnOpenRight" Content="Open Right in Explorer" Height="28" FontSize="11" Padding="10,2"
+                  Background="#FFFFFF" BorderBrush="#C5CCD6" BorderThickness="1" CornerRadius="3" />
+        </StackPanel>
+
+        <!-- Close Button -->
+        <Button Name="BtnClose" Grid.Column="2" Content="Close" Width="75" Height="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                Background="#2B6CB0" Foreground="White" FontWeight="SemiBold" FontSize="11.5" CornerRadius="3" IsDefault="True" IsCancel="True" />
+      </Grid>
+    </Border>
+  </Grid>
+</Window>
+

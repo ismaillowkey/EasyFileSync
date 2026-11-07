@@ -1,0 +1,61 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="EasyFileSync.App.Views.CheckForUpdatesDialog"
+        Title="Check for Updates"
+        Width="440"
+        SizeToContent="Height"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        Background="#FFFFFF"
+        FontFamily="Segoe UI, Inter, Arial, sans-serif">
+
+  <Grid RowDefinitions="Auto,Auto">
+
+    <!-- Konten Utama -->
+    <StackPanel Grid.Row="0" Margin="24,20,24,18" Spacing="16">
+
+      <!-- Status Header -->
+      <Grid ColumnDefinitions="Auto,*" VerticalAlignment="Center">
+        <Border Grid.Column="0" Width="44" Height="44" Background="#DCFCE7" BorderBrush="#86EFAC" BorderThickness="1" CornerRadius="22" Margin="0,0,14,0">
+          <TextBlock Name="TxtStatusIcon" Text="✓" FontSize="20" FontWeight="Bold" Foreground="#16A34A" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Border>
+
+        <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+          <TextBlock Name="TxtStatusTitle" Text="You are up to date!" FontSize="15" FontWeight="Bold" Foreground="#1E293B" />
+          <TextBlock Name="TxtStatusSubtitle" Text="EasyFileSync is running the latest version available." FontSize="11.5" Foreground="#64748B" />
+        </StackPanel>
+      </Grid>
+
+      <!-- Progress bar saat sedang memeriksa update -->
+      <ProgressBar Name="ProgChecking" Height="4" IsIndeterminate="True" Foreground="#2563EB" Background="#E2E8F0" CornerRadius="2" IsVisible="False" />
+
+      <!-- Kartu Informasi Versi -->
+      <Border Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="4" Padding="14,12">
+        <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto">
+          <TextBlock Grid.Row="0" Grid.Column="0" Text="Current Version:" FontSize="11.5" FontWeight="SemiBold" Foreground="#475569" Margin="0,3,16,3" />
+          <TextBlock Grid.Row="0" Grid.Column="1" Name="TxtCurrentVersion" Text="0.3.5" FontSize="11.5" FontWeight="Medium" Foreground="#1E293B" Margin="0,3,0,3" />
+
+          <TextBlock Grid.Row="1" Grid.Column="0" Text="Latest Version:" FontSize="11.5" FontWeight="SemiBold" Foreground="#475569" Margin="0,3,16,3" />
+          <TextBlock Grid.Row="1" Grid.Column="1" Name="TxtLatestVersion" Text="0.3.5" FontSize="11.5" FontWeight="Medium" Foreground="#16A34A" Margin="0,3,0,3" />
+
+          <TextBlock Grid.Row="2" Grid.Column="0" Text="Status:" FontSize="11.5" FontWeight="SemiBold" Foreground="#475569" Margin="0,3,16,3" />
+          <TextBlock Grid.Row="2" Grid.Column="1" Name="TxtCheckStatus" Text="No new updates available." FontSize="11.5" Foreground="#64748B" Margin="0,3,0,3" />
+        </Grid>
+      </Border>
+
+    </StackPanel>
+
+    <!-- Bottom Buttons Bar -->
+    <Border Grid.Row="1" Background="#F1F5F9" BorderBrush="#E2E8F0" BorderThickness="0,1,0,0" Padding="16,10">
+      <Grid ColumnDefinitions="*,Auto">
+        <Button Grid.Column="0" Name="BtnCheckAgain" Content="Check Again" Height="28" Padding="12,2"
+                Background="#FFFFFF" BorderBrush="#CBD5E1" BorderThickness="1" Foreground="#334155" FontSize="11.5" CornerRadius="3" HorizontalAlignment="Left" />
+
+        <Button Grid.Column="1" Name="BtnClose" Content="Close" Width="80" Height="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                Background="#2563EB" Foreground="#FFFFFF" FontWeight="SemiBold" FontSize="11.5" CornerRadius="3" IsCancel="True" IsDefault="True" />
+      </Grid>
+    </Border>
+
+  </Grid>
+</Window>
+

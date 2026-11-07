@@ -1,0 +1,110 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="EasyFileSync.App.Views.FilterHelpDialog"
+        Title="Filter Syntax &amp; Rules Help"
+        Width="580" Height="520"
+        MinWidth="520" MinHeight="450"
+        CanResize="True"
+        WindowStartupLocation="CenterOwner"
+        Background="#FFFFFF"
+        FontFamily="Segoe UI, Inter, Arial, sans-serif">
+
+  <Grid RowDefinitions="Auto,*,Auto">
+    <!-- Header -->
+    <Border Grid.Row="0" Background="#F1F5F9" BorderBrush="#E2E8F0" BorderThickness="0,0,0,1" Padding="18,14">
+      <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+        <Image Source="{SvgImage /Assets/Icons/filter.svg}" Width="24" Height="24" VerticalAlignment="Center" />
+        <StackPanel VerticalAlignment="Center">
+          <TextBlock Text="Filter Syntax &amp; Help" FontSize="14" FontWeight="Bold" Foreground="#1E293B" />
+          <TextBlock Text="Guide on how to include and exclude files and folders" FontSize="11.5" Foreground="#64748B" />
+        </StackPanel>
+      </StackPanel>
+    </Border>
+
+    <!-- Content (ScrollViewer) -->
+    <ScrollViewer Grid.Row="1" Padding="18,14">
+      <StackPanel Spacing="14">
+
+        <!-- Section: Folder Exclusion (e.g. node_modules) -->
+        <Border Background="#F8FAFC" BorderBrush="#CBD5E1" BorderThickness="1" CornerRadius="4" Padding="12">
+          <StackPanel Spacing="6">
+            <StackPanel Orientation="Horizontal" Spacing="6">
+              <TextBlock Text="📁" FontSize="13" />
+              <TextBlock Text="1. Excluding Folders (e.g. node_modules)" FontWeight="Bold" FontSize="12" Foreground="#0F172A" />
+            </StackPanel>
+            <TextBlock Text="To exclude a folder anywhere in your project and all files/subfolders inside it, simply enter its name:"
+                       FontSize="11.5" Foreground="#334155" TextWrapping="Wrap" />
+            <Border Background="#FFFFFF" BorderBrush="#E2E8F0" BorderThickness="1" Padding="8,4" CornerRadius="3">
+              <TextBlock Text="node_modules" FontFamily="Consolas, monospace" FontSize="11.5" FontWeight="SemiBold" Foreground="#2563EB" />
+            </Border>
+            <TextBlock Text="or with explicit prefix:" FontSize="11" Foreground="#64748B" />
+            <Border Background="#FFFFFF" BorderBrush="#E2E8F0" BorderThickness="1" Padding="8,4" CornerRadius="3">
+              <TextBlock Text="name node_modules" FontFamily="Consolas, monospace" FontSize="11.5" FontWeight="SemiBold" Foreground="#2563EB" />
+            </Border>
+            <TextBlock Text="Result: Any folder named 'node_modules' anywhere in the folder tree (such as /node_modules, /src/node_modules, /client/node_modules) and all contents inside it will be skipped from analysis and sync."
+                       FontSize="11" Foreground="#475569" TextWrapping="Wrap" />
+          </StackPanel>
+        </Border>
+
+        <!-- Section: File Name & Extension Matching -->
+        <Border Background="#F8FAFC" BorderBrush="#CBD5E1" BorderThickness="1" CornerRadius="4" Padding="12">
+          <StackPanel Spacing="6">
+            <StackPanel Orientation="Horizontal" Spacing="6">
+              <TextBlock Text="📄" FontSize="13" />
+              <TextBlock Text="2. File Name &amp; Extension Wildcards" FontWeight="Bold" FontSize="12" Foreground="#0F172A" />
+            </StackPanel>
+            <TextBlock Text="To match files by name or extension anywhere in the job:"
+                       FontSize="11.5" Foreground="#334155" TextWrapping="Wrap" />
+            <Border Background="#FFFFFF" BorderBrush="#E2E8F0" BorderThickness="1" Padding="8,4" CornerRadius="3">
+              <StackPanel Spacing="2">
+                <TextBlock Text="*.tmp            (matches any temporary file ending in .tmp)" FontFamily="Consolas, monospace" FontSize="11" Foreground="#2563EB" />
+                <TextBlock Text="*.bak            (matches backup files)" FontFamily="Consolas, monospace" FontSize="11" Foreground="#2563EB" />
+                <TextBlock Text="Thumbs.db        (matches Windows thumbnail cache)" FontFamily="Consolas, monospace" FontSize="11" Foreground="#2563EB" />
+                <TextBlock Text="temp_*           (matches any file or folder starting with temp_)" FontFamily="Consolas, monospace" FontSize="11" Foreground="#2563EB" />
+              </StackPanel>
+            </Border>
+          </StackPanel>
+        </Border>
+
+        <!-- Section: Path Rules -->
+        <Border Background="#F8FAFC" BorderBrush="#CBD5E1" BorderThickness="1" CornerRadius="4" Padding="12">
+          <StackPanel Spacing="6">
+            <StackPanel Orientation="Horizontal" Spacing="6">
+              <TextBlock Text="🗂️" FontSize="13" />
+              <TextBlock Text="3. Specific Path Matching" FontWeight="Bold" FontSize="12" Foreground="#0F172A" />
+            </StackPanel>
+            <TextBlock Text="Use 'path' prefix or path slashes to match specific folder hierarchies:"
+                       FontSize="11.5" Foreground="#334155" TextWrapping="Wrap" />
+            <Border Background="#FFFFFF" BorderBrush="#E2E8F0" BorderThickness="1" Padding="8,4" CornerRadius="3">
+              <StackPanel Spacing="2">
+                <TextBlock Text="path */bin/*     (matches any 'bin' directory and its contents)" FontFamily="Consolas, monospace" FontSize="11" Foreground="#2563EB" />
+                <TextBlock Text="path /dist/*     (matches only 'dist' at the sync root folder)" FontFamily="Consolas, monospace" FontSize="11" Foreground="#2563EB" />
+                <TextBlock Text="path */obj/*     (matches any 'obj' build directory)" FontFamily="Consolas, monospace" FontSize="11" Foreground="#2563EB" />
+              </StackPanel>
+            </Border>
+          </StackPanel>
+        </Border>
+
+        <!-- Section: Right-Click Shortcut Tip -->
+        <Border Background="#EFF6FF" BorderBrush="#93C5FD" BorderThickness="1" CornerRadius="4" Padding="12">
+          <StackPanel Spacing="6">
+            <StackPanel Orientation="Horizontal" Spacing="6">
+              <TextBlock Text="💡" FontSize="13" />
+              <TextBlock Text="Quick Shortcut: Right-Click to Exclude" FontWeight="Bold" FontSize="12" Foreground="#1E40AF" />
+            </StackPanel>
+            <TextBlock Text="You can easily right-click any file or folder directly in the comparison tree or browse view and select 'Exclude' to add it to your filters automatically without typing!"
+                       FontSize="11.5" Foreground="#1E3A8A" TextWrapping="Wrap" />
+          </StackPanel>
+        </Border>
+
+      </StackPanel>
+    </ScrollViewer>
+
+    <!-- Footer Bar -->
+    <Border Grid.Row="2" Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="0,1,0,0" Padding="14,10">
+      <Button Name="BtnClose" Content="Close" Width="85" Height="28" HorizontalAlignment="Right"
+              HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+              Background="#2563EB" Foreground="White" FontWeight="SemiBold" FontSize="11.5" CornerRadius="3" IsDefault="True" IsCancel="True" />
+    </Border>
+  </Grid>
+</Window>

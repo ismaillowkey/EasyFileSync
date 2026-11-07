@@ -1,0 +1,33 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="EasyFileSync.App.Views.RenameJobDialog"
+        Title="Rename Job"
+        Width="390" Height="175"
+        MinWidth="390" MinHeight="175"
+        MaxWidth="390" MaxHeight="175"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        Background="#FFFFFF"
+        FontFamily="Segoe UI, Inter, Arial, sans-serif">
+
+  <Grid RowDefinitions="*,Auto">
+    <!-- Area Input Nama Job Baru -->
+    <StackPanel Grid.Row="0" Margin="22,18,22,10" Spacing="8">
+      <TextBlock Text="Enter new job name:" FontSize="12.5" FontWeight="SemiBold" Foreground="#222222" />
+      <TextBox Name="TxtJobName" Height="30" FontSize="12" VerticalContentAlignment="Center"
+               Background="#FFFFFF" BorderBrush="#B4C2D2" CornerRadius="2" />
+      <TextBlock Name="TxtError" Text="" FontSize="11" Foreground="#D32F2F" IsVisible="False" />
+    </StackPanel>
+
+    <!-- Bottom Buttons Bar -->
+    <Border Grid.Row="1" Background="#EDF1F7" BorderBrush="#D8DFE8" BorderThickness="0,1,0,0" Padding="14,10">
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
+        <Button Name="BtnOk" Content="OK" Width="75" Height="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                Background="#2B6CB0" Foreground="White" FontWeight="SemiBold" FontSize="11.5" CornerRadius="3" IsDefault="True" />
+        <Button Name="BtnCancel" Content="Cancel" Width="75" Height="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                Background="#E2E8F0" Foreground="#333333" FontSize="11.5" CornerRadius="3" IsCancel="True" />
+      </StackPanel>
+    </Border>
+  </Grid>
+</Window>
+

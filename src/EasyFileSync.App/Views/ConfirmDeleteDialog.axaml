@@ -1,0 +1,35 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="EasyFileSync.App.Views.ConfirmDeleteDialog"
+        Title="Delete Job"
+        Width="380" Height="170"
+        MinWidth="380" MinHeight="170"
+        MaxWidth="380" MaxHeight="170"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        Background="#FFFFFF"
+        FontFamily="Segoe UI, Inter, Arial, sans-serif">
+
+  <Grid RowDefinitions="*,Auto">
+    <!-- Area Pertanyaan Konfirmasi -->
+    <StackPanel Grid.Row="0" Margin="22,18,22,10" Spacing="8">
+      <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+        <TextBlock Text="🗑️" FontSize="20" VerticalAlignment="Center" />
+        <TextBlock Name="TxtMessage" Text="Are you sure you want to delete this job?"
+                   FontSize="12.5" FontWeight="SemiBold" Foreground="#222222" VerticalAlignment="Center" TextWrapping="Wrap" />
+      </StackPanel>
+      <TextBlock Text="This operation cannot be undone." FontSize="11" Foreground="#777777" Margin="30,0,0,0" />
+    </StackPanel>
+
+    <!-- Bottom Buttons Bar -->
+    <Border Grid.Row="1" Background="#EDF1F7" BorderBrush="#D8DFE8" BorderThickness="0,1,0,0" Padding="14,10">
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
+        <Button Name="BtnDelete" Content="Delete" Width="75" Height="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                Background="#D32F2F" Foreground="White" FontWeight="SemiBold" FontSize="11.5" CornerRadius="3" IsDefault="True" />
+        <Button Name="BtnCancel" Content="Cancel" Width="75" Height="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                Background="#E2E8F0" Foreground="#333333" FontSize="11.5" CornerRadius="3" IsCancel="True" />
+      </StackPanel>
+    </Border>
+  </Grid>
+</Window>
+

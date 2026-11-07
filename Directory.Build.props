@@ -1,0 +1,11 @@
+<Project>
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <Version>0.3.5</Version>
+    <Authors>EasyFileSync</Authors>
+    <Product>EasyFileSync</Product>
+  </PropertyGroup>
+</Project>

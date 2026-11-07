@@ -1,0 +1,51 @@
+## .NET Build Outputs
+[Bb]in/
+[Oo]bj/
+[Pp]ublish/
+[Ll]og/
+[Ll]ogs/
+
+## Visual Studio
+.vs/
+*.user
+*.userprefs
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Visual Studio Code
+.vscode/
+
+## JetBrains Rider
+.idea/
+*.DotSettings.user
+
+## Test & Profiling Artifacts
+TestResults/
+*.coverage
+*.coveragexml
+
+## Database and Local Cache Files
+*.db-wal
+*.db-shm
+*.sqlite-wal
+*.sqlite-shm
+
+## Temporary & Swap Files
+*.tmp
+*.temp
+*.bak
+*~
+
+## Windows System Files
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+## macOS System Files
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+

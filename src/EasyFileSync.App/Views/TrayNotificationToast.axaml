@@ -1,0 +1,42 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="EasyFileSync.App.Views.TrayNotificationToast"
+        Title="EasyFileSync Notification"
+        Width="350" Height="92"
+        SystemDecorations="None"
+        ShowInTaskbar="False"
+        Topmost="True"
+        CanResize="False"
+        Background="Transparent"
+        TransparencyLevelHint="Transparent"
+        FontFamily="Segoe UI, Inter, Arial, sans-serif">
+
+  <Border Name="BorderContainer" Background="#FFFFFF" BorderBrush="#CBD5E1" BorderThickness="1" CornerRadius="8"
+          BoxShadow="0 8 24 0 #40000000" Margin="4" Padding="12,10" Cursor="Hand">
+    <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
+
+      <!-- Ikon Aplikasi -->
+      <Border Grid.Column="0" Width="36" Height="36" Background="#EFF6FF" BorderBrush="#BFDBFE" BorderThickness="1" CornerRadius="18" Margin="0,0,12,0" VerticalAlignment="Center">
+        <Image Source="{SvgImage /Assets/Icons/job.svg}" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" />
+      </Border>
+
+      <!-- Teks Notifikasi -->
+      <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+        <Grid ColumnDefinitions="Auto,*">
+          <TextBlock Grid.Column="0" Text="EasyFileSync" FontSize="12.5" FontWeight="Bold" Foreground="#1E293B" />
+          <TextBlock Grid.Column="1" Text="• Active in tray" FontSize="11" FontWeight="SemiBold" Foreground="#16A34A" Margin="6,1,0,0" />
+        </Grid>
+        <TextBlock Name="TxtMessage" Text="Application is running in the background. Click to open."
+                   FontSize="11" Foreground="#64748B" TextWrapping="Wrap" LineHeight="15" />
+      </StackPanel>
+
+      <!-- Tombol Tutup Notifikasi -->
+      <Button Grid.Column="2" Name="BtnDismiss" Content="✕" Width="22" Height="22" Padding="0"
+              FontSize="10" Foreground="#94A3B8" Background="Transparent" BorderThickness="0"
+              HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+              Cursor="Hand" VerticalAlignment="Top" Margin="4,-2,-4,0" ToolTip.Tip="Dismiss" />
+
+    </Grid>
+  </Border>
+</Window>
+

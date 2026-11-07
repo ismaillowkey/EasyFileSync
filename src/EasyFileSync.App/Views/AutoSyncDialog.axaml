@@ -1,0 +1,127 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="EasyFileSync.App.Views.AutoSyncDialog"
+        Title="Automated Synchronization"
+        Width="480"
+        SizeToContent="Height"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        Background="#FFFFFF"
+        FontFamily="Segoe UI, Inter, Arial, sans-serif">
+
+  <Grid RowDefinitions="Auto,Auto,Auto">
+
+    <!-- Header Bersih & Ringkas -->
+    <Border Grid.Row="0" Background="#F8FAFC" BorderBrush="#E2E6EA" BorderThickness="0,0,0,1" Padding="16,10">
+      <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+        <Image Source="{SvgImage /Assets/Icons/autorunon.svg}" Width="24" Height="24" VerticalAlignment="Center" />
+        <StackPanel VerticalAlignment="Center" Spacing="1">
+          <TextBlock Text="Automated Synchronization" FontSize="13.5" FontWeight="SemiBold" Foreground="#222222" />
+          <TextBlock Name="TxtJobSubtitle" Text="Configure automatic background synchronization" FontSize="11.5" Foreground="#666666" />
+        </StackPanel>
+      </StackPanel>
+    </Border>
+
+    <!-- Konten Utama (Kompak, Proporsional, Tanpa Scrollbar) -->
+    <StackPanel Grid.Row="1" Margin="16,12" Spacing="10">
+
+      <!-- Pilihan Utama: Enable / Disable (Berdampingan Horisontal) -->
+      <StackPanel Orientation="Horizontal" Spacing="24" Margin="2,0,0,2">
+        <RadioButton Name="RbEnable" Content="Enable Auto Sync" GroupName="AutoSyncMode"
+                     FontSize="12.5" FontWeight="SemiBold" Foreground="#222222" />
+        <RadioButton Name="RbDisable" Content="Disable Auto Sync" GroupName="AutoSyncMode"
+                     FontSize="12.5" Foreground="#666666" />
+      </StackPanel>
+
+      <!-- Kotak Checklist Opsi Pemicu Sinkronisasi -->
+      <Border Name="BorderChecklist" BorderBrush="#D8DFE8" BorderThickness="1" CornerRadius="4" Background="#FFFFFF" Padding="14,10">
+        <StackPanel Spacing="10">
+
+          <!-- 1. On file change -->
+          <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
+            <CheckBox Name="ChkOnFileChange" Content="On file change" FontSize="12.5" FontWeight="Medium" Foreground="#222222" VerticalAlignment="Center" />
+            <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
+              <TextBlock Text="Delay:" FontSize="12" Foreground="#555555" VerticalAlignment="Center" />
+              <TextBox Name="TxtFileChangeDelay" Width="46" Height="26" MaxLength="4" FontSize="12" Text="10" TextAlignment="Center" VerticalContentAlignment="Center" CornerRadius="2" Padding="2,0" />
+              <TextBlock Text="sec" FontSize="12" Foreground="#555555" VerticalAlignment="Center" />
+            </StackPanel>
+          </Grid>
+
+          <!-- Garis Pemisah Halus -->
+          <Border Height="1" Background="#EEF2F6" />
+
+          <!-- 2. By interval -->
+          <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
+            <CheckBox Name="ChkOnInterval" Content="By interval" FontSize="12.5" FontWeight="Medium" Foreground="#222222" VerticalAlignment="Center" />
+            <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
+              <TextBlock Text="Every:" FontSize="12" Foreground="#555555" VerticalAlignment="Center" />
+              <TextBox Name="TxtIntervalHours" Width="40" Height="26" MaxLength="3" FontSize="12" Text="0" TextAlignment="Center" VerticalContentAlignment="Center" CornerRadius="2" Padding="2,0" />
+              <TextBlock Text="h" FontSize="12" Foreground="#555555" VerticalAlignment="Center" />
+              <TextBox Name="TxtIntervalMinutes" Width="40" Height="26" MaxLength="2" FontSize="12" Text="30" TextAlignment="Center" VerticalContentAlignment="Center" CornerRadius="2" Padding="2,0" />
+              <TextBlock Text="min" FontSize="12" Foreground="#555555" VerticalAlignment="Center" />
+            </StackPanel>
+          </Grid>
+
+          <!-- Garis Pemisah Halus -->
+          <Border Height="1" Background="#EEF2F6" />
+
+          <!-- 3. By date / clock -->
+          <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
+            <CheckBox Name="ChkOnClock" Content="By date / clock" FontSize="12.5" FontWeight="Medium" Foreground="#222222" VerticalAlignment="Center" />
+            <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
+              <TextBlock Text="Daily at:" FontSize="12" Foreground="#555555" VerticalAlignment="Center" />
+              <TextBox Name="TxtClockHour" Width="40" Height="26" MaxLength="2" FontSize="12" Text="02" TextAlignment="Center" VerticalContentAlignment="Center" CornerRadius="2" Padding="2,0" />
+              <TextBlock Text=":" FontSize="12" FontWeight="Bold" Foreground="#333333" VerticalAlignment="Center" />
+              <TextBox Name="TxtClockMinute" Width="40" Height="26" MaxLength="2" FontSize="12" Text="00" TextAlignment="Center" VerticalContentAlignment="Center" CornerRadius="2" Padding="2,0" />
+            </StackPanel>
+          </Grid>
+
+          <!-- Garis Pemisah Halus -->
+          <Border Height="1" Background="#EEF2F6" />
+
+          <!-- 4. On device connect -->
+          <StackPanel Spacing="2">
+            <CheckBox Name="ChkOnConnect" Content="1x when connecting to device" FontSize="12.5" FontWeight="Medium" Foreground="#222222" VerticalAlignment="Center" />
+            <TextBlock Text="Runs once automatically when target USB or network drive connects."
+                       FontSize="11.5" Foreground="#777777" Margin="24,0,0,0" TextWrapping="Wrap" />
+          </StackPanel>
+
+        </StackPanel>
+      </Border>
+
+      <!-- Pengaturan Maximum Parallel Transfers (Dropdown Rapi & Elegan) -->
+      <Border BorderBrush="#D8DFE8" BorderThickness="1" CornerRadius="4" Background="#F8FAFC" Padding="12,8">
+        <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
+          <StackPanel VerticalAlignment="Center" Spacing="1">
+            <TextBlock Text="Maximum parallel folder transfers:" FontSize="12" FontWeight="SemiBold" Foreground="#222222" />
+            <TextBlock Text="Default 3 (min 1, max 10). Lower for slower PCs (i3 / HDD)." FontSize="10.5" Foreground="#666666" />
+          </StackPanel>
+          <ComboBox Name="CmbAutoParallel" Grid.Column="2" Width="75" Height="28" VerticalAlignment="Center">
+            <ComboBoxItem Content="1" />
+            <ComboBoxItem Content="2" />
+            <ComboBoxItem Content="3" />
+            <ComboBoxItem Content="4" />
+            <ComboBoxItem Content="5" />
+            <ComboBoxItem Content="6" />
+            <ComboBoxItem Content="7" />
+            <ComboBoxItem Content="8" />
+            <ComboBoxItem Content="9" />
+            <ComboBoxItem Content="10" />
+          </ComboBox>
+        </Grid>
+      </Border>
+
+    </StackPanel>
+
+    <!-- Bottom Buttons Bar -->
+    <Border Grid.Row="2" Background="#EDF1F7" BorderBrush="#D8DFE8" BorderThickness="0,1,0,0" Padding="16,10">
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+        <Button Name="BtnSave" Content="Save" Width="80" Height="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                Background="#0078D7" Foreground="#FFFFFF" FontWeight="SemiBold" FontSize="12" CornerRadius="2" IsDefault="True" />
+        <Button Name="BtnCancel" Content="Cancel" Width="80" Height="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                Background="#FFFFFF" BorderBrush="#ADBDCE" BorderThickness="1" Foreground="#222222" FontSize="12" CornerRadius="2" IsCancel="True" />
+      </StackPanel>
+    </Border>
+
+  </Grid>
+</Window>

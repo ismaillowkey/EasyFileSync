@@ -1,0 +1,30 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="EasyFileSync.App.Views.LoadingProgressDialog"
+        Title="Connecting..."
+        Width="380" Height="165"
+        MinWidth="380" MinHeight="165"
+        MaxWidth="380" MaxHeight="165"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        Background="#FFFFFF"
+        FontFamily="Segoe UI, Inter, Arial, sans-serif">
+
+  <Grid RowDefinitions="*,Auto">
+    <!-- Area Info Loading -->
+    <StackPanel Grid.Row="0" Margin="22,18,22,12" Spacing="10">
+      <TextBlock Name="TxtTitle" Text="Connecting to server..." FontSize="13" FontWeight="SemiBold" Foreground="#222222" TextTrimming="CharacterEllipsis" />
+      <ProgressBar Name="ProgressBarLoading" IsIndeterminate="True" Height="6" CornerRadius="3" Foreground="#2B6CB0" Background="#E2E8F0" />
+      <TextBlock Name="TxtSubStatus" Text="Retrieving network share data, please wait..." FontSize="11" Foreground="#666666" />
+    </StackPanel>
+
+    <!-- Bottom Actions Bar -->
+    <Border Grid.Row="1" Background="#EDF1F7" BorderBrush="#D8DFE8" BorderThickness="0,1,0,0" Padding="14,10">
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+        <Button Name="BtnCancel" Content="Cancel" Width="80" Height="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                Background="#E2E8F0" Foreground="#333333" FontSize="11.5" CornerRadius="3" IsCancel="True" />
+      </StackPanel>
+    </Border>
+  </Grid>
+</Window>
+

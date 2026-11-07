@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>EasyFileSync</title>
+  <link rel="stylesheet" href="gs.css">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body class="flex_vert">
+  <div id="top_menubar" class="flex_gor">
+    <div id="main_menu_window" class="flex_gor"></div>
+  </div>
+
+  <div id="main_window" class="flex_gor flex_1_1">
+    <div id="left_window" class="flex_vert stretch_x">
+      <div id="left_img_menu" class="panel_with_bottom_border">
+        <button id="more_info">More &gt;</button>
+      </div>
+      <div id="left_tree_window" class="white_panel flex_1_1"></div>
+    </div>
+
+    <div id="right_window" class="flex_vert flex_1_1" style="overflow: hidden;">
+      <div id="user_and_comp_info" class="flex_gor" style="display: none;"></div>
+
+      <div id="right_img_menu" class="panel_with_bottom_border">
+        <div id="right_left_img_menu" class="flex_gor flex_0_0"></div>
+
+        <div id="upper_job_detale_box" class="flex_1">
+          <div id="curr_job_info" class="flex_vert flex_1_1">
+            <div id="curr_job_detailes" class="flex_gor">
+              <div id="left_side_details" class="endpoint_box other_active_element" title="Click to select folder">
+                <div id="left_text_and_diagram" class="flex_1_1">
+                  <div class="flex_gor" style="justify-content: center; align-items: center;">
+                    <div id="left_crypto_info"></div>
+                    <div id="left_url" class="src_info endpoint_text_link">Please click here to select folder</div>
+                  </div>
+                  <div id="left_diagram1" style="display: none;">
+                    <div class="space_diagram_total">
+                      <div id="left_diagram_occup1" class="space_diagram_occup"></div>
+                      <div id="left_diagram_recuir1" class="space_diagram_recuir"></div>
+                    </div>
+                    <div id="left_space"></div>
+                  </div>
+                </div>
+                <div id="left_src_img" class="flex_0_0 position_relative big_direct_icon" style="display: none;"></div>
+              </div>
+
+              <div id="center_of_job_info">
+                <div id="job_direct" class="flex_0_0 position_relative big_direct_icon other_active_element">
+                  <div class="endpoint_center_box">
+                    <img src="svg/folder_question.svg" class="folder_q_svg" alt="?">
+                    <span class="endpoint_arrow" id="center_direction_arrow">&rarr;</span>
+                    <img src="svg/folder_question.svg" class="folder_q_svg" alt="?">
+                  </div>
+                </div>
+                <div id="curr_job_name" class="other_active_element" style="display: none;"></div>
+              </div>
+
+              <div id="right_side_details" class="endpoint_box other_active_element" title="Click to select folder">
+                <div id="right_src_img" class="flex_0_0 position_relative big_direct_icon" style="display: none;"></div>
+                <div id="right_text_and_diagram" class="flex_1_1">
+                  <div class="flex_gor" style="justify-content: center; align-items: center;">
+                    <div id="right_url" class="src_info endpoint_text_link">Please click here to select folder</div>
+                    <div id="right_crypto_info"></div>
+                  </div>
+                  <div id="right_diagram1" style="display: none;">
+                    <div class="space_diagram_total">
+                      <div id="right_diagram_occup1" class="space_diagram_occup"></div>
+                      <div id="right_diagram_recuir1" class="space_diagram_recuir"></div>
+                    </div>
+                    <div id="right_space"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="right_top_err_line" style="display: none;"></div>
+          </div>
+        </div>
+
+        <div id="right_right_img_menu" class="flex_gor flex_0_0"></div>
+      </div>
+
+      <div id="low_job_detale_box"></div>
+      <div id="tree_view_control" class="white_panel flex_gor" style="flex: 0 0; display:none;"></div>
+
+      <div id="right_table_window" class="white_panel flex_vert flex_1_1"></div>
+
+      <div id="open_log_window_cont"><button id="open_log_window" title="Toggle Log">&#128470;</button></div>
+
+      <div id="right_bottom_window" class="white_panel flex_vert" style="display: none;">
+        <div id="close_log_window_cont">
+          <div id="log_control_box">
+            <button id="log_menu_button">&#9776;</button>
+            <span id="log_close_X">&#10006;</span>
+          </div>
+        </div>
+        <div id="log_window" class="flex_1_1"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="my_modal" style="display:none;"></div>
+  <div id="html_err" style="display:none;"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

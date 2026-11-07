@@ -1,0 +1,1220 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="clr-namespace:EasyFileSync.App.Views"
+        x:Class="EasyFileSync.App.Views.MainWindow"
+        Width="1280" Height="740"
+        MinWidth="960" MinHeight="560"
+        WindowState="Maximized"
+        Title="EasyFileSync"
+        Icon="/Assets/app.ico"
+        Background="#FFFFFF"
+        FontFamily="Segoe UI, Inter, Arial, sans-serif">
+
+  <Window.Styles>
+    <!-- Style Tombol Toolbar Flat -->
+    <Style Selector="Button.tool-btn">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Padding" Value="6,4" />
+      <Setter Property="Cursor" Value="Hand" />
+      <Setter Property="HorizontalAlignment" Value="Center" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style Selector="Button.tool-btn:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="#E0E6F0" />
+      <Setter Property="CornerRadius" Value="3" />
+    </Style>
+    <Style Selector="Button.tool-btn:pressed /template/ ContentPresenter">
+      <Setter Property="Background" Value="#D0D9E6" />
+    </Style>
+    <Style Selector="Button.tool-btn:disabled /template/ ContentPresenter">
+      <Setter Property="Opacity" Value="0.4" />
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+
+    <!-- Style Kotak Folder Picker -->
+    <Style Selector="Border.folder-box">
+      <Setter Property="Background" Value="#FFFFFF" />
+      <Setter Property="BorderBrush" Value="#B4C2D2" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="2" />
+      <Setter Property="Cursor" Value="Hand" />
+    </Style>
+    <Style Selector="Border.folder-box:pointerover">
+      <Setter Property="BorderBrush" Value="#6AA0E4" />
+      <Setter Property="BoxShadow" Value="0 1 3 0 #20000000" />
+    </Style>
+
+    <!-- Style Menu Item -->
+    <Style Selector="MenuItem">
+      <Setter Property="FontSize" Value="12" />
+      <Setter Property="Padding" Value="7,4" />
+    </Style>
+
+    <!-- Style Header Kolom Browse Mode -->
+    <Style Selector="Border.browse-header">
+      <Setter Property="Background" Value="#E5F1FB" />
+      <Setter Property="BorderBrush" Value="#C2D6EC" />
+      <Setter Property="BorderThickness" Value="0,1,0,1" />
+      <Setter Property="Height" Value="25" />
+      <Setter Property="Padding" Value="8,2" />
+    </Style>
+
+    <!-- Style TreeView Item -->
+    <Style Selector="TreeViewItem">
+      <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+      <Setter Property="Padding" Value="2,1" />
+      <Setter Property="FontSize" Value="12" />
+    </Style>
+    <Style Selector="TreeViewItem:selected /template/ ContentPresenter">
+      <Setter Property="Background" Value="#CCE8FF" />
+    </Style>
+  </Window.Styles>
+
+  <Panel>
+    <DockPanel LastChildFill="True">
+
+    <!-- 1. TOP MENU BAR -->
+    <Border DockPanel.Dock="Top" Background="#F2F5F8" BorderBrush="#D8DFE8" BorderThickness="0,0,0,1">
+      <DockPanel>
+        <Menu Background="Transparent" Padding="4,2">
+          <MenuItem Header="Job">
+            <MenuItem Header="New Job..." Click="OnNewJobClicked">
+              <MenuItem.Icon>
+                <Image Source="{SvgImage /Assets/Icons/newjob.svg}" Width="16" Height="16" />
+              </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="New Group..." Click="OnNewGroupClicked">
+              <MenuItem.Icon>
+                <Image Source="{SvgImage /Assets/Icons/newgroup.svg}" Width="16" Height="16" />
+              </MenuItem.Icon>
+            </MenuItem>
+            <Separator />
+            <MenuItem Header="Job Options..." Click="OnJobContextOptionsClick" InputGesture="Alt+O">
+              <MenuItem.Icon>
+                <Image Source="{SvgImage /Assets/Icons/settings.svg}" Width="16" Height="16" />
+              </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="Auto Sync Settings..." Click="OnJobContextAutoClick">
+              <MenuItem.Icon>
+                <Image Source="{SvgImage /Assets/Icons/autorunon.svg}" Width="16" Height="16" />
+              </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="Rename Job..." Click="OnJobContextRenameClick" InputGesture="F2">
+              <MenuItem.Icon>
+                <Image Source="{SvgImage /Assets/Icons/rename.svg}" Width="16" Height="16" />
+              </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="Delete Job" Click="OnJobContextDeleteClick" InputGesture="Delete">
+              <MenuItem.Icon>
+                <Image Source="{SvgImage /Assets/Icons/delete.svg}" Width="16" Height="16" />
+              </MenuItem.Icon>
+            </MenuItem>
+            <Separator />
+            <MenuItem Header="Exit" Click="OnMenuExitClick" />
+          </MenuItem>
+          <MenuItem Padding="2,0" Margin="2,1">
+            <MenuItem.Header>
+              <Border Background="#68A5EC" CornerRadius="3" Padding="8,2" VerticalAlignment="Center">
+                <TextBlock Text="All" Foreground="White" FontWeight="SemiBold" FontSize="11" />
+              </Border>
+            </MenuItem.Header>
+            <MenuItem Header="Analyze All" InputGesture="F6" HotKey="F6" Click="OnAnalyzeAllClicked">
+              <MenuItem.Icon>
+                <Image Source="{SvgImage /Assets/Icons/analyze_all.svg}" Width="16" Height="16" />
+              </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="Synchronize All" InputGesture="F8" HotKey="F8" Click="OnSyncAllClicked">
+              <MenuItem.Icon>
+                <Image Source="{SvgImage /Assets/Icons/sync.svg}" Width="16" Height="16" />
+              </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="Analyze and Sync All" InputGesture="F10" HotKey="F10" Click="OnAnalyzeAndSyncAllClicked">
+              <MenuItem.Icon>
+                <Image Source="{SvgImage /Assets/Icons/analyze_sync_all.svg}" Width="16" Height="16" />
+              </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="Stop All" Click="OnStopAllClicked">
+              <MenuItem.Icon>
+                <Image Source="{SvgImage /Assets/Icons/stop.svg}" Width="16" Height="16" />
+              </MenuItem.Icon>
+            </MenuItem>
+            <Separator />
+            <MenuItem Name="MenuAutoRunToggle" Header="AutoRun OFF" InputGesture="F4" HotKey="F4" Click="OnAutoRunToggleClicked">
+              <MenuItem.Icon>
+                <Image Name="ImgMenuAutoRun" Source="{SvgImage /Assets/Icons/autorunoff.svg}" Width="16" Height="16" />
+              </MenuItem.Icon>
+            </MenuItem>
+          </MenuItem>
+          <MenuItem Header="View">
+            <MenuItem Header="Tray Icon" Click="OnMinimizeToTrayClick" />
+            <Separator />
+            <MenuItem Name="MenuViewFilters" Header="Filters" ToggleType="CheckBox" Click="OnToggleFiltersViewClick" />
+            <MenuItem Name="MenuViewLog" Header="Log" ToggleType="CheckBox" Click="OnToggleLogViewClick" />
+          </MenuItem>
+          <MenuItem Header="Tools">
+            <MenuItem Header="Export All Jobs" Click="OnExportAllJobsClick" />
+            <MenuItem Header="Import All Jobs" Click="OnImportAllJobsClick" />
+          </MenuItem>
+          <MenuItem Header="About">
+            <MenuItem Header="Check for Updates..." Click="OnCheckForUpdatesClick">
+              <MenuItem.Icon>
+                <Image Source="{SvgImage /Assets/Icons/sync.svg}" Width="16" Height="16" />
+              </MenuItem.Icon>
+            </MenuItem>
+            <Separator />
+            <MenuItem Header="Filter Rules Guide..." Click="OnOpenFilterHelpClick">
+              <MenuItem.Icon>
+                <Image Source="{SvgImage /Assets/Icons/filter.svg}" Width="16" Height="16" />
+              </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="About EasyFileSync" Click="OnAboutClick">
+              <MenuItem.Icon>
+                <Image Source="{SvgImage /Assets/Icons/job.svg}" Width="16" Height="16" />
+              </MenuItem.Icon>
+            </MenuItem>
+          </MenuItem>
+        </Menu>
+      </DockPanel>
+    </Border>
+
+    <!-- 2. MAIN TOOLBAR (GoodSync Header) -->
+    <Border DockPanel.Dock="Top" Background="#EDF1F7" BorderBrush="#D2D8E2" BorderThickness="0,0,0,1" Height="80">
+      <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
+
+        <!-- Toolbar Sisi Kiri -->
+        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0,4,0" Spacing="4">
+          <!-- Tombol New Job -->
+          <Button Name="BtnNewJob" Classes="tool-btn" Width="58" Height="64" ToolTip.Tip="Create a new job">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="2">
+              <Image Source="{SvgImage /Assets/Icons/newjob.svg}" Width="24" Height="24" />
+              <TextBlock Text="New Job" FontSize="11" Foreground="#333333" HorizontalAlignment="Center" />
+            </StackPanel>
+          </Button>
+
+          <!-- Tombol New Group -->
+          <Button Name="BtnNewGroup" Classes="tool-btn" Width="64" Height="64" ToolTip.Tip="Create a new group">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="2">
+              <Image Source="{SvgImage /Assets/Icons/newgroup.svg}" Width="24" Height="24" />
+              <TextBlock Text="New Group" FontSize="11" Foreground="#333333" HorizontalAlignment="Center" />
+            </StackPanel>
+          </Button>
+
+          <!-- Separator Vertikal -->
+          <Border Width="1" Height="42" Background="#CAD2DE" Margin="4,0,8,0" />
+
+          <!-- Panel Aksi Normal: Analyze, Sync, Stop & Auto Sync -->
+          <StackPanel Name="PanelActionNormal" Orientation="Horizontal" Spacing="4">
+            <!-- Tombol Analyze -->
+            <Button Name="BtnAnalyze" Classes="tool-btn" Width="56" Height="64" ToolTip.Tip="Analyze changes">
+              <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="2">
+                <Image Source="{SvgImage /Assets/Icons/analyze.svg}" Width="24" Height="24" />
+                <TextBlock Text="Analyze" FontSize="11" Foreground="#333333" HorizontalAlignment="Center" />
+              </StackPanel>
+            </Button>
+
+            <!-- Tombol Sync -->
+            <Button Name="BtnSync" Classes="tool-btn" Width="52" Height="64" ToolTip.Tip="Run synchronization">
+              <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="2">
+                <Image Source="{SvgImage /Assets/Icons/sync.svg}" Width="24" Height="24" />
+                <TextBlock Text="Sync" FontSize="11" Foreground="#333333" HorizontalAlignment="Center" />
+              </StackPanel>
+            </Button>
+
+            <!-- Tombol Stop (Merah, muncul saat proses Analyze atau Sync berjalan) -->
+            <Button Name="BtnStop" Classes="tool-btn" Width="52" Height="64" ToolTip.Tip="Stop current operation" IsVisible="False">
+              <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="2">
+                <Image Source="{SvgImage /Assets/Icons/stop.svg}" Width="24" Height="24" />
+                <TextBlock Text="Stop" FontSize="11" Foreground="#C62828" FontWeight="SemiBold" HorizontalAlignment="Center" />
+              </StackPanel>
+            </Button>
+
+            <!-- Tombol Auto Sync -->
+            <Button Name="BtnAuto" Classes="tool-btn" Width="64" Height="64" ToolTip.Tip="Automated synchronization settings">
+              <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="2">
+                <Image Name="ImgAutoOn" Source="{SvgImage /Assets/Icons/autorunon.svg}" Width="24" Height="24" IsVisible="False" />
+                <Image Name="ImgAutoOff" Source="{SvgImage /Assets/Icons/autorunoff.svg}" Width="24" Height="24" IsVisible="True" />
+                <TextBlock Name="TxtAutoLabel" Text="Auto Sync" FontSize="11" Foreground="#333333" HorizontalAlignment="Center" />
+              </StackPanel>
+            </Button>
+          </StackPanel>
+
+          <!-- Panel Aksi Browse Mode: Apply & Cancel -->
+          <StackPanel Name="PanelActionBrowse" Orientation="Horizontal" Spacing="4" IsVisible="False">
+            <!-- Tombol Apply (Aktif hanya jika kiri dan kanan sudah dipilih) -->
+            <Button Name="BtnApply" Classes="tool-btn" Width="52" Height="60" IsEnabled="False" ToolTip.Tip="Apply folder selection">
+              <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="2">
+                <Image Source="{SvgImage /Assets/Icons/apply.svg}" Width="24" Height="24" />
+                <TextBlock Text="Apply" FontSize="11" Foreground="#333333" HorizontalAlignment="Center" />
+              </StackPanel>
+            </Button>
+
+            <!-- Tombol Cancel -->
+            <Button Name="BtnCancel" Classes="tool-btn" Width="52" Height="60" ToolTip.Tip="Cancel folder selection">
+              <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="2">
+                <Image Source="{SvgImage /Assets/Icons/cancel.svg}" Width="24" Height="24" />
+                <TextBlock Text="Cancel" FontSize="11" Foreground="#333333" HorizontalAlignment="Center" />
+              </StackPanel>
+            </Button>
+          </StackPanel>
+        </StackPanel>
+
+        <!-- Toolbar Sisi Tengah: KOTAK KIRI & KOTAK KANAN -->
+        <Grid Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" RowDefinitions="Auto,Auto" Margin="10,0">
+
+          <!-- Label Mode Browse di Atas Kotak -->
+          <Grid Grid.Row="0" ColumnDefinitions="*,*" Margin="0,0,0,3">
+            <TextBlock Name="TxtBrowseLeftModeTitle" Grid.Column="0" Text="Folder Select (Browse) Mode" FontSize="10.5" Foreground="#555555" HorizontalAlignment="Center" IsVisible="False" />
+            <TextBlock Name="TxtBrowseRightModeTitle" Grid.Column="1" Text="Folder Select (Browse) Mode" FontSize="10.5" Foreground="#555555" HorizontalAlignment="Center" IsVisible="False" />
+          </Grid>
+
+          <!-- Baris Dua Kotak Folder -->
+          <Grid Grid.Row="1" ColumnDefinitions="Auto,Auto,Auto">
+
+            <!-- KOTAK KIRI (Left Folder Box) -->
+            <Border Name="BoxLeftFolder" Grid.Column="0" Classes="folder-box" Width="330" Height="62" Padding="8,4">
+              <Grid VerticalAlignment="Center">
+                <TextBlock Name="TxtLeftPlaceholder" Text="Please click here to select folder" FontSize="11" Foreground="#444444" FontFamily="Segoe UI" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <StackPanel Name="PanelLeftSelectedInfo" Spacing="1" VerticalAlignment="Center" IsVisible="False">
+                  <TextBlock Text="Change Folder" FontSize="9.5" Foreground="#2A6496" HorizontalAlignment="Left" />
+                  <StackPanel Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
+                    <Image Name="ImgLeftFolderLocal" Source="{SvgImage /Assets/Icons/computer.svg}" Width="15" Height="15" VerticalAlignment="Center" />
+                    <Image Name="ImgLeftFolderSmb" Source="{SvgImage /Assets/Icons/fs_smb.svg}" Width="15" Height="15" VerticalAlignment="Center" IsVisible="False" />
+                    <TextBlock Name="TxtLeftPath" Text="" FontSize="11.5" FontWeight="SemiBold" Foreground="#111111" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                  </StackPanel>
+                  <TextBlock Name="TxtLeftDiskInfo" Text="" FontSize="9" Foreground="#666666" TextTrimming="CharacterEllipsis" Margin="0,1,0,0" />
+                </StackPanel>
+              </Grid>
+            </Border>
+
+            <!-- Tombol Swap / Swipe Kiri <-> Kanan -->
+            <Button Name="BtnSwapFolders" Grid.Column="1" Width="40" Height="40" Margin="10,0"
+                    ToolTip.Tip="Swap Left and Right folders (Tukar Posisi Folder Kiri dan Kanan)"
+                    Background="#FFFFFF" BorderBrush="#B8CEE8" BorderThickness="1" CornerRadius="6"
+                    Cursor="Hand" VerticalAlignment="Center" HorizontalAlignment="Center">
+              <Button.Styles>
+                <Style Selector="Button#BtnSwapFolders:pointerover /template/ ContentPresenter">
+                  <Setter Property="Background" Value="#E2EDF9" />
+                  <Setter Property="BorderBrush" Value="#4B93D8" />
+                </Style>
+                <Style Selector="Button#BtnSwapFolders:pressed /template/ ContentPresenter">
+                  <Setter Property="Background" Value="#CCE0F5" />
+                  <Setter Property="BorderBrush" Value="#2A6496" />
+                </Style>
+              </Button.Styles>
+              <Image Source="{SvgImage /Assets/Icons/swap.svg}" Width="22" Height="22" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Button>
+
+            <!-- KOTAK KANAN (Right Folder Box) -->
+            <Border Name="BoxRightFolder" Grid.Column="2" Classes="folder-box" Width="330" Height="62" Padding="8,4">
+              <Grid VerticalAlignment="Center">
+                <TextBlock Name="TxtRightPlaceholder" Text="Please click here to select folder" FontSize="11" Foreground="#444444" FontFamily="Segoe UI" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <StackPanel Name="PanelRightSelectedInfo" Spacing="1" VerticalAlignment="Center" IsVisible="False">
+                  <TextBlock Text="Change Folder" FontSize="9.5" Foreground="#2A6496" HorizontalAlignment="Right" />
+                  <StackPanel Orientation="Horizontal" Spacing="5" VerticalAlignment="Center" HorizontalAlignment="Right">
+                    <TextBlock Name="TxtRightPath" Text="" FontSize="11.5" FontWeight="SemiBold" Foreground="#111111" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                    <Image Name="ImgRightFolderLocal" Source="{SvgImage /Assets/Icons/computer.svg}" Width="15" Height="15" VerticalAlignment="Center" />
+                    <Image Name="ImgRightFolderSmb" Source="{SvgImage /Assets/Icons/fs_smb.svg}" Width="15" Height="15" VerticalAlignment="Center" IsVisible="False" />
+                  </StackPanel>
+                  <TextBlock Name="TxtRightDiskInfo" Text="" FontSize="9" Foreground="#666666" TextTrimming="CharacterEllipsis" HorizontalAlignment="Right" Margin="0,1,0,0" />
+                </StackPanel>
+              </Grid>
+            </Border>
+          </Grid>
+        </Grid>
+
+        <!-- Toolbar Sisi Kanan: Switch Eksklusif Normal vs Browse -->
+        <Grid Grid.Column="2" VerticalAlignment="Center" Margin="4,0,12,0">
+
+          <!-- A. Mode Normal: Options -->
+          <StackPanel Name="PanelRightNormal" Orientation="Horizontal" Spacing="4" IsVisible="True">
+            <Border Width="1" Height="38" Background="#CAD2DE" Margin="4,0,8,0" />
+
+            <Button Name="BtnOptions" Classes="tool-btn" Width="56" Height="60" ToolTip.Tip="Job Options">
+              <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="2">
+                <Image Source="{SvgImage /Assets/Icons/settings.svg}" Width="24" Height="24" />
+                <TextBlock Text="Options" FontSize="11" Foreground="#333333" HorizontalAlignment="Center" />
+              </StackPanel>
+            </Button>
+          </StackPanel>
+
+          <!-- B. Mode Browse: Multiple Folders/Files Saja -->
+          <StackPanel Name="PanelRightBrowse" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="False">
+            <Button Classes="tool-btn" Padding="4,2" ToolTip.Tip="Multiple Folders / Files selection">
+              <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="2">
+                <Image Source="{SvgImage /Assets/Icons/multiple_folders.svg}" Width="22" Height="22" HorizontalAlignment="Center" />
+                <TextBlock Text="Multiple Folders/Files" FontSize="10" Foreground="#555555" HorizontalAlignment="Center" />
+              </StackPanel>
+            </Button>
+          </StackPanel>
+
+        </Grid>
+      </Grid>
+    </Border>
+
+    <!-- 3. BANNER PERINGATAN / STATUS BROWSE MODE -->
+    <Border Name="BannerStatus" DockPanel.Dock="Top" Background="#FFFFFF" BorderBrush="#E0E5EC" BorderThickness="0,0,0,1" Padding="14,6" IsVisible="False">
+      <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+        <TextBlock Name="TxtBannerIcon" Text="⛔" FontSize="13" VerticalAlignment="Center" />
+        <TextBlock Name="TxtBannerMessage" Text="Please select a folder on left side" FontSize="12" Foreground="#D32F2F" VerticalAlignment="Center" FontFamily="Segoe UI" />
+      </StackPanel>
+    </Border>
+
+    <!-- 4. MAIN BODY (Splitter Grid) -->
+    <Grid ColumnDefinitions="240,1,*">
+
+      <!-- Kolom Kiri: Sidebar Daftar Job -->
+      <Border Grid.Column="0" Background="#FFFFFF" BorderBrush="#D8DFE8" BorderThickness="0,0,1,0">
+        <DockPanel LastChildFill="True">
+
+          <!-- Header Sidebar: All Jobs -->
+          <Border DockPanel.Dock="Top" Padding="10,8,10,6" Background="#FAFBFC" BorderBrush="#EAECEF" BorderThickness="0,0,0,1">
+            <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+              <TextBlock Text="▾" FontSize="13" Foreground="#555555" VerticalAlignment="Center" />
+              <TextBlock Text="⚪" FontSize="10" Foreground="#888888" VerticalAlignment="Center" />
+              <TextBlock Text="All Jobs" FontSize="12" FontWeight="SemiBold" Foreground="#333333" VerticalAlignment="Center" />
+            </StackPanel>
+          </Border>
+
+          <!-- ListBox Jobs -->
+          <ListBox Name="ListJobs" Background="Transparent" BorderThickness="0" Padding="0">
+            <ListBox.Styles>
+              <Style Selector="ListBoxItem">
+                <Setter Property="Padding" Value="10,7" />
+                <Setter Property="Cursor" Value="Hand" />
+              </Style>
+              <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+                <Setter Property="Background" Value="#CCE8FF" />
+                <Setter Property="BorderBrush" Value="#99D1FF" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="CornerRadius" Value="2" />
+              </Style>
+            </ListBox.Styles>
+            <ListBox.ItemTemplate>
+              <DataTemplate x:DataType="views:JobSidebarItem">
+                <Grid Background="Transparent" IsVisible="{Binding IsVisible}">
+                  <!-- Tampilan Baris Group -->
+                  <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center"
+                              Margin="{Binding IndentMargin}" IsVisible="{Binding IsGroup}">
+                    <StackPanel.ContextMenu>
+                      <ContextMenu>
+                        <MenuItem Header="New Job in this Group..." Click="OnGroupContextNewJobClick">
+                          <MenuItem.Icon>
+                            <Image Source="{SvgImage /Assets/Icons/newjob.svg}" Width="16" Height="16" />
+                          </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Rename Group..." Click="OnGroupContextRenameClick">
+                          <MenuItem.Icon>
+                            <Image Source="{SvgImage /Assets/Icons/rename.svg}" Width="16" Height="16" />
+                          </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Delete Group" Click="OnGroupContextDeleteClick">
+                          <MenuItem.Icon>
+                            <Image Source="{SvgImage /Assets/Icons/delete.svg}" Width="16" Height="16" />
+                          </MenuItem.Icon>
+                        </MenuItem>
+                      </ContextMenu>
+                    </StackPanel.ContextMenu>
+                    <TextBlock Text="{Binding ExpandGlyph}" FontSize="11" Foreground="#555555" VerticalAlignment="Center" Width="12" TextAlignment="Center" />
+                    <Image Source="{SvgImage /Assets/Icons/folder.svg}" Width="16" Height="16" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding DisplayTitle}" FontWeight="SemiBold" FontSize="12" Foreground="#1E293B" VerticalAlignment="Center" />
+                  </StackPanel>
+
+                  <!-- Tampilan Baris Job -->
+                  <Grid Background="Transparent" Margin="{Binding IndentMargin}" IsVisible="{Binding !IsGroup}">
+                    <Grid.ContextMenu>
+                      <ContextMenu>
+                        <!-- 1. Analyze -->
+                        <MenuItem Header="Analyze" Click="OnJobContextAnalyzeClick" InputGesture="F5">
+                          <MenuItem.Icon>
+                            <Image Source="{SvgImage /Assets/Icons/analyze.svg}" Width="16" Height="16" />
+                          </MenuItem.Icon>
+                        </MenuItem>
+
+                        <!-- 2. Synchronize -->
+                        <MenuItem Header="Synchronize" Click="OnJobContextSyncClick" InputGesture="F7">
+                          <MenuItem.Icon>
+                            <Image Source="{SvgImage /Assets/Icons/sync.svg}" Width="16" Height="16" />
+                          </MenuItem.Icon>
+                        </MenuItem>
+
+                        <!-- 3. Analyze and Sync -->
+                        <MenuItem Header="Analyze and Sync" Click="OnJobContextAnalyzeAndSyncClick" InputGesture="F9" />
+
+                        <Separator />
+
+                        <!-- 4. Options... -->
+                        <MenuItem Header="Options..." Click="OnJobContextOptionsClick" InputGesture="Alt+O">
+                          <MenuItem.Icon>
+                            <Image Source="{SvgImage /Assets/Icons/settings.svg}" Width="16" Height="16" />
+                          </MenuItem.Icon>
+                        </MenuItem>
+
+                        <!-- Auto... -->
+                        <MenuItem Header="Auto..." Click="OnJobContextAutoClick">
+                          <MenuItem.Icon>
+                            <Image Source="{SvgImage /Assets/Icons/autorunon.svg}" Width="16" Height="16" />
+                          </MenuItem.Icon>
+                        </MenuItem>
+
+                        <Separator />
+
+                        <!-- Move to Group... -->
+                        <MenuItem Header="Move to Group..." Click="OnJobContextMoveToGroupClick">
+                          <MenuItem.Icon>
+                            <Image Source="{SvgImage /Assets/Icons/folder.svg}" Width="16" Height="16" />
+                          </MenuItem.Icon>
+                        </MenuItem>
+
+                        <Separator />
+
+                        <!-- 5. New -->
+                        <MenuItem Header="New" Click="OnNewJobClicked" InputGesture="Alt+N">
+                          <MenuItem.Icon>
+                            <Image Source="{SvgImage /Assets/Icons/newjob.svg}" Width="16" Height="16" />
+                          </MenuItem.Icon>
+                        </MenuItem>
+
+                        <!-- 6. Delete -->
+                        <MenuItem Header="Delete" Click="OnJobContextDeleteClick" InputGesture="Delete">
+                          <MenuItem.Icon>
+                            <Image Source="{SvgImage /Assets/Icons/delete.svg}" Width="16" Height="16" />
+                          </MenuItem.Icon>
+                        </MenuItem>
+
+                        <!-- 7. Rename -->
+                        <MenuItem Header="Rename" Click="OnJobContextRenameClick" InputGesture="F2">
+                          <MenuItem.Icon>
+                            <Image Source="{SvgImage /Assets/Icons/rename.svg}" Width="16" Height="16" />
+                          </MenuItem.Icon>
+                        </MenuItem>
+
+                        <!-- 8. Clone -->
+                        <MenuItem Header="Clone" Click="OnJobContextCloneClick" InputGesture="Alt+C" />
+                      </ContextMenu>
+                    </Grid.ContextMenu>
+
+                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                      <Image Source="{SvgImage /Assets/Icons/sync.svg}" Width="15" Height="15" VerticalAlignment="Center" />
+                      <TextBlock Text="{Binding Name}" FontSize="12.5" Foreground="#1F2328" VerticalAlignment="Center" />
+                    </StackPanel>
+                  </Grid>
+                </Grid>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </DockPanel>
+      </Border>
+
+      <!-- Garis Pemisah (Splitter Line) -->
+      <Border Grid.Column="1" Background="#D8DFE8" Width="1" />
+
+      <!-- Kolom Kanan: Main Content Area -->
+      <DockPanel Grid.Column="2" Background="#FFFFFF" LastChildFill="True">
+
+        <!-- STATUS NOTIFIKASI UTAMA (PERSIS GOODSYNC: KUNING SAAT STOPPED/PAUSED, HIJAU SAAT RUNNING, MERAH SAAT ERROR, ABU-ABU IDLE) -->
+        <Border Name="BannerJobStatus" DockPanel.Dock="Top" Background="#F1F5F9" BorderBrush="#E2E8F0" BorderThickness="0,0,0,1" Height="28" Padding="14,0">
+          <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
+            <!-- Teks Notifikasi / Status -->
+            <TextBlock Grid.Column="0" Name="TxtJobStatusMessage" Text="No synchronization performed yet."
+                       FontSize="11.5" Foreground="#334155" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+
+            <!-- Tombol Dismiss / Close Notifikasi (Kotak Merah Icon X Persis GoodSync) -->
+            <Button Grid.Column="1" Name="BtnCloseJobStatus" Click="OnDismissJobStatusClick"
+                    Width="16" Height="16" MinWidth="16" MinHeight="16" Padding="0"
+                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    Background="#E53935" Foreground="#FFFFFF" BorderThickness="0" CornerRadius="2"
+                    Cursor="Hand" ToolTip.Tip="Dismiss notification" IsVisible="False">
+              <TextBlock Text="✕" FontSize="9" FontWeight="Bold" Foreground="#FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-1,0,0" />
+            </Button>
+          </Grid>
+        </Border>
+
+        <!-- SUB-TOOLBAR: BEYOND COMPARE STYLE OPERATIONS & QUICK FILTER BAR -->
+        <Border Name="BarOperations" DockPanel.Dock="Top" Background="#F6F8FA" BorderBrush="#D2D9E2" BorderThickness="0,0,0,1" Padding="14,8">
+          <Grid ColumnDefinitions="*,Auto,*" VerticalAlignment="Center">
+
+            <!-- 1. SISI KIRI: Operations Dropdown, Icon Rules, Deskripsi & Stat -->
+            <StackPanel Grid.Column="0" Spacing="3" Margin="0,0,10,0">
+              <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                <TextBlock Text="Operations:" FontSize="11.5" FontWeight="SemiBold" Foreground="#333333" VerticalAlignment="Center" />
+                <ComboBox Name="CmbOperations" Width="210" Height="28" FontSize="11.5" VerticalContentAlignment="Center">
+                  <ComboBoxItem Tag="UpdateLeft">
+                    <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                      <TextBlock Text="&lt;&lt;" Foreground="#2E7D32" FontSize="12" FontWeight="Bold" VerticalAlignment="Center" />
+                      <TextBlock Text="Update Left" FontSize="11.5" FontWeight="SemiBold" Foreground="#222222" VerticalAlignment="Center" />
+                    </StackPanel>
+                  </ComboBoxItem>
+                  <ComboBoxItem Tag="UpdateRight">
+                    <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                      <TextBlock Text="&gt;&gt;" Foreground="#2E7D32" FontSize="12" FontWeight="Bold" VerticalAlignment="Center" />
+                      <TextBlock Text="Update Right" FontSize="11.5" FontWeight="SemiBold" Foreground="#222222" VerticalAlignment="Center" />
+                    </StackPanel>
+                  </ComboBoxItem>
+                  <ComboBoxItem Tag="UpdateBoth">
+                    <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                      <TextBlock Text="&lt;&gt;" Foreground="#2E7D32" FontSize="12" FontWeight="Bold" VerticalAlignment="Center" />
+                      <TextBlock Text="Update Both" FontSize="11.5" FontWeight="SemiBold" Foreground="#222222" VerticalAlignment="Center" />
+                    </StackPanel>
+                  </ComboBoxItem>
+                  <ComboBoxItem Tag="MirrorLeft">
+                    <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                      <TextBlock Text="&lt;&lt;&lt;" Foreground="#D32F2F" FontSize="11" FontWeight="Bold" VerticalAlignment="Center" />
+                      <TextBlock Text="Mirror to Left" FontSize="11.5" FontWeight="SemiBold" Foreground="#222222" VerticalAlignment="Center" />
+                    </StackPanel>
+                  </ComboBoxItem>
+                  <ComboBoxItem Tag="MirrorRight">
+                    <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                      <TextBlock Text="&gt;&gt;&gt;" Foreground="#D32F2F" FontSize="11" FontWeight="Bold" VerticalAlignment="Center" />
+                      <TextBlock Text="Mirror to Right" FontSize="11.5" FontWeight="SemiBold" Foreground="#222222" VerticalAlignment="Center" />
+                    </StackPanel>
+                  </ComboBoxItem>
+                </ComboBox>
+
+                <!-- Icon Session / Referee seperti di Beyond Compare -->
+                <Image Source="{SvgImage /Assets/Icons/user_blue.svg}" Width="16" Height="16" VerticalAlignment="Center" ToolTip.Tip="Session Rules" />
+              </StackPanel>
+
+              <!-- Deskripsi Operasi yang Dipilih (Persis Beyond Compare) -->
+              <TextBlock Name="TxtOperationDescription" Text="Copy newer and orphan files/folders from left to right."
+                         FontSize="10" Foreground="#555555" Margin="78,0,0,0" />
+
+              <!-- Statistik File Hasil Analisa -->
+              <TextBlock Name="TxtOperationStats" Text="Ready to analyze"
+                         FontSize="10" Foreground="#666666" Margin="78,0,0,0" />
+            </StackPanel>
+
+            <!-- 2. PEMISAH TENGAH -->
+            <Border Grid.Column="1" Width="1" Height="50" Background="#E0E4EA" Margin="10,0" />
+
+            <!-- 3. SISI KANAN: Quick Filter & Status Terakhir Sinkronisasi -->
+            <StackPanel Grid.Column="2" Spacing="3" Margin="0,0,12,0">
+              <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                <TextBlock Text="Filters:" FontSize="11.5" FontWeight="SemiBold" Foreground="#333333" VerticalAlignment="Center" />
+                <TextBox Name="TxtQuickFilter" Width="260" Height="28" FontSize="11" VerticalContentAlignment="Center"
+                         Watermark="-desktop.ini; -*.tmp;" Background="#FFFFFF" BorderBrush="#CAD2DE" CornerRadius="2" />
+                <Button Name="BtnOpenFilters" Classes="tool-btn" Width="28" Height="28" ToolTip.Tip="Edit Job Filters...">
+                  <Image Source="{SvgImage /Assets/Icons/filter.svg}" Width="15" Height="15" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Button>
+              </StackPanel>
+
+              <!-- CheckBox Show Only Different -->
+              <StackPanel Orientation="Horizontal" Spacing="14" Margin="48,2,0,0" VerticalAlignment="Center">
+                <CheckBox Name="ChkShowOnlyDifferent" Content="Show only different"
+                          FontSize="10.5" Foreground="#333333" IsChecked="False"
+                          Click="OnShowOnlyDifferentClick" VerticalAlignment="Center" Cursor="Hand" />
+              </StackPanel>
+            </StackPanel>
+
+          </Grid>
+        </Border>
+
+        <!-- SIDE PANEL: FILTERS (GOODSYNC STYLE, DOCK RIGHT) -->
+        <Border Name="PanelFilters" DockPanel.Dock="Right" Width="330" Background="#FFFFFF" BorderBrush="#D2D9E2" BorderThickness="1,0,0,0" IsVisible="False">
+          <DockPanel LastChildFill="True">
+            <!-- Header Filters -->
+            <Border DockPanel.Dock="Top" Background="#F1F5F9" BorderBrush="#E2E8F0" BorderThickness="0,0,0,1" Padding="10,6">
+              <Grid ColumnDefinitions="*,Auto,Auto">
+                <TextBlock Grid.Column="0" Text="Filters" FontSize="12" FontWeight="Bold" Foreground="#1E293B" VerticalAlignment="Center" />
+                <Button Grid.Column="1" Content="?" Click="OnOpenFilterHelpClick" Width="22" Height="22" FontSize="11" FontWeight="Bold" Padding="0"
+                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                        Background="Transparent" BorderThickness="0" Foreground="#2563EB" Cursor="Hand" ToolTip.Tip="Filter Syntax Help" Margin="0,0,4,0" />
+                <Button Grid.Column="2" Content="✕" Click="OnCloseFiltersPanelClick" Width="22" Height="22" FontSize="11" Padding="0"
+                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                        Background="Transparent" BorderThickness="0" Foreground="#64748B" Cursor="Hand" ToolTip.Tip="Close Filters panel" />
+              </Grid>
+            </Border>
+
+            <!-- Bagian Bawah: Checkbox-checkbox Exclude -->
+            <Border DockPanel.Dock="Bottom" Background="#FAFAFA" BorderBrush="#E2E8F0" BorderThickness="0,1,0,0" Padding="10,8">
+              <StackPanel Spacing="6">
+                <CheckBox Name="ChkExcludeEmptyFolders" Content="Exclude empty folders" FontSize="11" Foreground="#334155" Checked="OnFilterOptionChanged" Unchecked="OnFilterOptionChanged" />
+                <CheckBox Name="ChkExcludeHidden" Content="Exclude Hidden files and folders" FontSize="11" Foreground="#334155" Checked="OnFilterOptionChanged" Unchecked="OnFilterOptionChanged" />
+                <CheckBox Name="ChkExcludeSystem" Content="Exclude System files and folders" FontSize="11" Foreground="#334155" Checked="OnFilterOptionChanged" Unchecked="OnFilterOptionChanged" />
+                <CheckBox Name="ChkExcludeTemp" Content="Exclude Temporary files and folders" FontSize="11" Foreground="#334155" IsChecked="True" Checked="OnFilterOptionChanged" Unchecked="OnFilterOptionChanged" />
+              </StackPanel>
+            </Border>
+
+            <!-- Bagian Tengah: Include & Exclude Rules List -->
+            <Grid RowDefinitions="*,1,*">
+
+              <!-- Bagian Atas: Include -->
+              <DockPanel Grid.Row="0" Margin="0,0,0,4">
+                <!-- Bar Include -->
+                <Border DockPanel.Dock="Top" Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="0,0,0,1" Padding="8,4">
+                  <Grid ColumnDefinitions="*,Auto">
+                    <TextBlock Grid.Column="0" Text="Include All of (no lines: include all)" FontSize="10.5" Foreground="#64748B" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="4">
+                      <Button Content="Copy All" Click="OnCopyIncludeRulesClick" Height="20" FontSize="9.5" Padding="4,0" Background="#FFFFFF" BorderBrush="#CBD5E1" BorderThickness="1" CornerRadius="2" />
+                      <Button Content="Paste" Click="OnPasteIncludeRulesClick" Height="20" FontSize="9.5" Padding="4,0" Background="#FFFFFF" BorderBrush="#CBD5E1" BorderThickness="1" CornerRadius="2" />
+                      <Button Content="+" Click="OnAddIncludeRuleClick" Width="20" Height="20" FontSize="11" FontWeight="Bold" Padding="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="#FFFFFF" BorderBrush="#CBD5E1" BorderThickness="1" CornerRadius="2" ToolTip.Tip="Add include rule" />
+                      <Button Content="-" Click="OnRemoveIncludeRuleClick" Width="20" Height="20" FontSize="11" FontWeight="Bold" Padding="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="#FFFFFF" BorderBrush="#CBD5E1" BorderThickness="1" CornerRadius="2" ToolTip.Tip="Remove last include rule" />
+                    </StackPanel>
+                  </Grid>
+                </Border>
+                <!-- Include TextBox -->
+                <TextBox Name="TxtIncludeRules" AcceptsReturn="True" TextWrapping="NoWrap" FontFamily="Consolas, monospace" FontSize="11" BorderThickness="0" Background="#FFFFFF" Padding="6" Watermark="e.g. name *.docx or path */src/*" TextChanged="OnFilterTextChanged" />
+              </DockPanel>
+
+              <!-- Garis Pemisah Tengah -->
+              <Border Grid.Row="1" Background="#E2E8F0" Height="1" />
+
+              <!-- Bagian Bawah: Exclude -->
+              <DockPanel Grid.Row="2" Margin="0,4,0,0">
+                <!-- Bar Exclude -->
+                <Border DockPanel.Dock="Top" Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="0,0,0,1" Padding="8,4">
+                  <Grid ColumnDefinitions="*,Auto">
+                    <TextBlock Grid.Column="0" Text="Exclude All after Include (no lines: exclude all)" FontSize="10.5" Foreground="#64748B" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="4">
+                      <Button Content="Copy All" Click="OnCopyExcludeRulesClick" Height="20" FontSize="9.5" Padding="4,0" Background="#FFFFFF" BorderBrush="#CBD5E1" BorderThickness="1" CornerRadius="2" />
+                      <Button Content="Paste" Click="OnPasteExcludeRulesClick" Height="20" FontSize="9.5" Padding="4,0" Background="#FFFFFF" BorderBrush="#CBD5E1" BorderThickness="1" CornerRadius="2" />
+                      <Button Content="+" Click="OnAddExcludeRuleClick" Width="20" Height="20" FontSize="11" FontWeight="Bold" Padding="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="#FFFFFF" BorderBrush="#CBD5E1" BorderThickness="1" CornerRadius="2" ToolTip.Tip="Add exclude rule" />
+                      <Button Content="-" Click="OnRemoveExcludeRuleClick" Width="20" Height="20" FontSize="11" FontWeight="Bold" Padding="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="#FFFFFF" BorderBrush="#CBD5E1" BorderThickness="1" CornerRadius="2" ToolTip.Tip="Remove last exclude rule" />
+                    </StackPanel>
+                  </Grid>
+                </Border>
+                <!-- Exclude TextBox -->
+                <TextBox Name="TxtExcludeRules" AcceptsReturn="True" TextWrapping="NoWrap" FontFamily="Consolas, monospace" FontSize="11" BorderThickness="0" Background="#FFFFFF" Padding="6" Watermark="e.g. name *.bak or path */temp/*" TextChanged="OnFilterTextChanged" />
+              </DockPanel>
+
+            </Grid>
+          </DockPanel>
+        </Border>
+
+        <!-- BOTTOM PANEL: DEBUG & ACTIVITY LOG (GOODSYNC STYLE, DOCK BOTTOM) -->
+        <Border Name="PanelLog" DockPanel.Dock="Bottom" Height="175" Background="#FFFFFF" BorderBrush="#D2D9E2" BorderThickness="0,1,0,0" IsVisible="False">
+          <DockPanel LastChildFill="True">
+            <!-- Header Log -->
+            <Border DockPanel.Dock="Top" Background="#F1F5F9" BorderBrush="#E2E8F0" BorderThickness="0,0,0,1" Padding="10,4">
+              <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                  <TextBlock Text="📋 Activity &amp; Debug Log" FontSize="11.5" FontWeight="Bold" Foreground="#1E293B" VerticalAlignment="Center" />
+                  <TextBlock Name="TxtLogSummary" Text="(0 lines)" FontSize="10.5" Foreground="#64748B" VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                  <Button Content="Clear" Click="OnClearLogClick" Height="22" FontSize="10.5" Padding="8,1" Background="#FFFFFF" BorderBrush="#CBD5E1" BorderThickness="1" CornerRadius="2" />
+                  <Button Content="Copy All" Click="OnCopyAllLogClick" Height="22" FontSize="10.5" Padding="8,1" Background="#FFFFFF" BorderBrush="#CBD5E1" BorderThickness="1" CornerRadius="2" />
+                  <Button Content="✕" Click="OnCloseLogPanelClick" Width="22" Height="22" FontSize="11" Padding="0"
+                          HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                          Background="Transparent" BorderThickness="0" Foreground="#64748B" Cursor="Hand" ToolTip.Tip="Close Log panel" />
+                </StackPanel>
+              </Grid>
+            </Border>
+
+            <!-- Isi Text Log -->
+            <TextBox Name="TxtDebugLog" AcceptsReturn="True" TextWrapping="NoWrap" IsReadOnly="True"
+                     FontFamily="Consolas, Courier New, monospace" FontSize="11" Foreground="#1E293B"
+                     Background="#F8FAFC" BorderThickness="0" Padding="8" />
+          </DockPanel>
+        </Border>
+
+        <!-- Area Workspace -->
+        <Grid>
+
+        <!-- A. TAMPILAN MODE NORMAL: Tutorial 3 Langkah GoodSync -->
+        <Grid Name="PanelTutorial" IsVisible="True">
+          <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="16" Margin="20">
+            <!-- Langkah 1 -->
+            <StackPanel Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+              <Image Source="{SvgImage /Assets/Icons/folder_question.svg}" Width="24" Height="22" VerticalAlignment="Center" />
+              <TextBlock Text="1. Choose the Left and the Right Sync Folders for your Job."
+                         FontFamily="Segoe UI" FontSize="18.5" FontWeight="Light" Foreground="#9E9E9E" VerticalAlignment="Center" />
+            </StackPanel>
+
+            <!-- Langkah 2 -->
+            <StackPanel Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+              <Image Source="{SvgImage /Assets/Icons/step_check.svg}" Width="22" Height="22" VerticalAlignment="Center" />
+              <TextBlock Text="2.Click Apply to confirm the choice of Sync Folders."
+                         FontFamily="Segoe UI" FontSize="18.5" FontWeight="Light" Foreground="#9E9E9E" VerticalAlignment="Center" />
+            </StackPanel>
+
+            <!-- Langkah 3 -->
+            <StackPanel Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+              <Image Source="{SvgImage /Assets/Icons/analyze.svg}" Width="22" Height="22" VerticalAlignment="Center" />
+              <TextBlock Text="3.Click Analyze to see the proposed File Copy and Delete operations."
+                         FontFamily="Segoe UI" FontSize="18.5" FontWeight="Light" Foreground="#9E9E9E" VerticalAlignment="Center" />
+            </StackPanel>
+          </StackPanel>
+
+          <!-- Icon Splitter di Bottom Center -->
+          <Border HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,6"
+                  Background="#F0F0F0" BorderBrush="#D0D0D0" BorderThickness="1" CornerRadius="2" Padding="6,2">
+            <TextBlock Text="🗛" FontSize="10" Foreground="#888888" HorizontalAlignment="Center" />
+          </Border>
+        </Grid>
+
+        <!-- B. TAMPILAN MODE BROWSE FOLDER (Dual-Pane Tree: Left & Right) -->
+        <Grid Name="PanelBrowseMode" ColumnDefinitions="*,1,*" IsVisible="False">
+
+          <!-- PANE KIRI (Browse Folder Kiri) -->
+          <DockPanel Grid.Column="0" LastChildFill="True">
+
+            <!-- Kotak Input Path Kiri (Address Bar) -->
+            <Border DockPanel.Dock="Top" Background="#F8F9FA" BorderBrush="#D8DFE8" BorderThickness="0,0,0,1" Padding="8,5">
+              <StackPanel Spacing="3">
+                <TextBox Name="TxtLeftAddress" Height="26" FontSize="11.5" VerticalContentAlignment="Center" Background="#FFFFFF" BorderBrush="#C5CCD6" CornerRadius="2" Watermark="Type or paste left folder path and press Enter..." />
+                <TextBlock Name="TxtLeftAddressError" Text="" FontSize="11" Foreground="#D32F2F" Margin="2,1,0,0" IsVisible="False" TextWrapping="Wrap" />
+              </StackPanel>
+            </Border>
+
+            <!-- Header Kolom Kiri: Name | Comment -->
+            <Border DockPanel.Dock="Top" Classes="browse-header">
+              <Grid ColumnDefinitions="*,130">
+                <TextBlock Grid.Column="0" Text="Name" FontSize="11.5" FontWeight="SemiBold" Foreground="#333333" VerticalAlignment="Center" />
+                <TextBlock Grid.Column="1" Text="Comment" FontSize="11.5" FontWeight="SemiBold" Foreground="#333333" VerticalAlignment="Center" />
+              </Grid>
+            </Border>
+
+            <!-- Pohon Direktori Kiri (This Computer) -->
+            <TreeView Name="TreeLeft" Background="#FFFFFF" BorderThickness="0">
+              <TreeView.ItemTemplate>
+                <TreeDataTemplate ItemsSource="{Binding Children}">
+                  <Grid ColumnDefinitions="*,130" Margin="0,1" Background="Transparent">
+                    <Grid.ContextMenu>
+                      <ContextMenu>
+                        <MenuItem Header="New Folder..." Click="OnNewFolderMenuItemClick">
+                          <MenuItem.Icon>
+                            <Image Source="{SvgImage /Assets/Icons/folder.svg}" Width="16" Height="16" />
+                          </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Refresh" Click="OnRefreshTreeMenuItemClick">
+                          <MenuItem.Icon>
+                            <Image Source="{SvgImage /Assets/Icons/refresh.svg}" Width="16" Height="16" />
+                          </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem Header="Exclude Folder from Job" Click="OnTreeExcludeFolderClick">
+                          <MenuItem.Icon>
+                            <Image Source="{SvgImage /Assets/Icons/filter.svg}" Width="16" Height="16" />
+                          </MenuItem.Icon>
+                        </MenuItem>
+                      </ContextMenu>
+                    </Grid.ContextMenu>
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                      <Image Source="{SvgImage /Assets/Icons/computer.svg}" IsVisible="{Binding IsThisComputer}" Width="16" Height="16" VerticalAlignment="Center" />
+                      <Image Source="{SvgImage /Assets/Icons/user_blue.svg}" IsVisible="{Binding IsLocalGroup}" Width="16" Height="16" VerticalAlignment="Center" />
+                      <Image Source="{SvgImage /Assets/Icons/fs_smb.svg}" IsVisible="{Binding IsSmb}" Width="16" Height="16" VerticalAlignment="Center" />
+                      <Image Source="{SvgImage /Assets/Icons/folder.svg}" IsVisible="{Binding IsFolderOrDrive}" Width="16" Height="16" VerticalAlignment="Center" />
+                      <TextBlock Text="{Binding Name}" FontSize="12" Foreground="#222222" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <TextBlock Grid.Column="1" Text="{Binding Comment}" FontSize="11" Foreground="#666666" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="4,0" />
+                  </Grid>
+                </TreeDataTemplate>
+              </TreeView.ItemTemplate>
+            </TreeView>
+          </DockPanel>
+
+          <!-- Divider Tengah Dual-Pane -->
+          <Border Grid.Column="1" Background="#D8DFE8" Width="1" />
+
+          <!-- PANE KANAN (Browse Folder Kanan) -->
+          <DockPanel Grid.Column="2" LastChildFill="True">
+
+            <!-- Kotak Input Path Kanan (Address Bar) -->
+            <Border DockPanel.Dock="Top" Background="#F8F9FA" BorderBrush="#D8DFE8" BorderThickness="0,0,0,1" Padding="8,5">
+              <StackPanel Spacing="3">
+                <TextBox Name="TxtRightAddress" Height="26" FontSize="11.5" VerticalContentAlignment="Center" Background="#FFFFFF" BorderBrush="#C5CCD6" CornerRadius="2" Watermark="Type or paste right folder path and press Enter..." />
+                <TextBlock Name="TxtRightAddressError" Text="" FontSize="11" Foreground="#D32F2F" Margin="2,1,0,0" IsVisible="False" TextWrapping="Wrap" />
+              </StackPanel>
+            </Border>
+
+            <!-- Header Kolom Kanan: Name | Comment -->
+            <Border DockPanel.Dock="Top" Classes="browse-header">
+              <Grid ColumnDefinitions="*,130">
+                <TextBlock Grid.Column="0" Text="Name" FontSize="11.5" FontWeight="SemiBold" Foreground="#333333" VerticalAlignment="Center" />
+                <TextBlock Grid.Column="1" Text="Comment" FontSize="11.5" FontWeight="SemiBold" Foreground="#333333" VerticalAlignment="Center" />
+              </Grid>
+            </Border>
+
+            <!-- Pohon Direktori Kanan (This Computer) -->
+            <TreeView Name="TreeRight" Background="#FFFFFF" BorderThickness="0">
+              <TreeView.ItemTemplate>
+                <TreeDataTemplate ItemsSource="{Binding Children}">
+                  <Grid ColumnDefinitions="*,130" Margin="0,1" Background="Transparent">
+                    <Grid.ContextMenu>
+                      <ContextMenu>
+                        <MenuItem Header="New Folder..." Click="OnNewFolderMenuItemClick">
+                          <MenuItem.Icon>
+                            <Image Source="{SvgImage /Assets/Icons/folder.svg}" Width="16" Height="16" />
+                          </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Refresh" Click="OnRefreshTreeMenuItemClick">
+                          <MenuItem.Icon>
+                            <Image Source="{SvgImage /Assets/Icons/refresh.svg}" Width="16" Height="16" />
+                          </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem Header="Exclude Folder from Job" Click="OnTreeExcludeFolderClick">
+                          <MenuItem.Icon>
+                            <Image Source="{SvgImage /Assets/Icons/filter.svg}" Width="16" Height="16" />
+                          </MenuItem.Icon>
+                        </MenuItem>
+                      </ContextMenu>
+                    </Grid.ContextMenu>
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                      <Image Source="{SvgImage /Assets/Icons/computer.svg}" IsVisible="{Binding IsThisComputer}" Width="16" Height="16" VerticalAlignment="Center" />
+                      <Image Source="{SvgImage /Assets/Icons/user_blue.svg}" IsVisible="{Binding IsLocalGroup}" Width="16" Height="16" VerticalAlignment="Center" />
+                      <Image Source="{SvgImage /Assets/Icons/fs_smb.svg}" IsVisible="{Binding IsSmb}" Width="16" Height="16" VerticalAlignment="Center" />
+                      <Image Source="{SvgImage /Assets/Icons/folder.svg}" IsVisible="{Binding IsFolderOrDrive}" Width="16" Height="16" VerticalAlignment="Center" />
+                      <TextBlock Text="{Binding Name}" FontSize="12" Foreground="#222222" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <TextBlock Grid.Column="1" Text="{Binding Comment}" FontSize="11" Foreground="#666666" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="4,0" />
+                  </Grid>
+                </TreeDataTemplate>
+              </TreeView.ItemTemplate>
+            </TreeView>
+          </DockPanel>
+
+        </Grid>
+
+        <!-- C. TAMPILAN MODE SEDANG MENGANALISA (GoodSync Analyzing Progress Screen) -->
+        <Grid Name="PanelAnalyzing" IsVisible="False" Background="#FFFFFF">
+          <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="16" Margin="20">
+            <!-- Persentase Besar (misal: 01% analyzing) -->
+            <TextBlock Name="TxtAnalyzePercent" Text="01% analyzing" FontSize="44" FontWeight="Light" FontFamily="Segoe UI" Foreground="#8A9BA8" HorizontalAlignment="Center" />
+
+            <!-- Keterangan Status / File State yang sedang dibaca -->
+            <TextBlock Name="TxtAnalyzeStatus" Text="Reading State from database (EasyFileSync.db)..." FontSize="12" Foreground="#444444" HorizontalAlignment="Center" TextTrimming="CharacterEllipsis" MaxWidth="680" />
+
+            <!-- Dua Progress Bar Berdampingan (Kiri & Kanan) -->
+            <Grid ColumnDefinitions="300,30,300" HorizontalAlignment="Center" Margin="0,16,0,0">
+              <!-- Sisi Kiri -->
+              <StackPanel Grid.Column="0" Spacing="8">
+                <ProgressBar Name="ProgAnalyzeLeft" Height="14" Minimum="0" Maximum="100" Value="0" Background="#E0E0E0" Foreground="#4A90E2" CornerRadius="1" />
+                <Grid ColumnDefinitions="*,*">
+                  <TextBlock Name="TxtAnalyzeLeftFolders" Grid.Column="0" Text="0 Folders" FontSize="11" Foreground="#666666" HorizontalAlignment="Right" Margin="0,0,8,0" />
+                  <TextBlock Name="TxtAnalyzeLeftFiles" Grid.Column="1" Text="0 Files" FontSize="11" Foreground="#666666" HorizontalAlignment="Left" Margin="8,0,0,0" />
+                </Grid>
+              </StackPanel>
+
+              <!-- Pemisah Tengah -->
+              <Border Grid.Column="1" Width="1" />
+
+              <!-- Sisi Kanan -->
+              <StackPanel Grid.Column="2" Spacing="8">
+                <ProgressBar Name="ProgAnalyzeRight" Height="14" Minimum="0" Maximum="100" Value="0" Background="#E0E0E0" Foreground="#4A90E2" CornerRadius="1" />
+                <Grid ColumnDefinitions="*,*">
+                  <TextBlock Name="TxtAnalyzeRightFolders" Grid.Column="0" Text="Folders 0" FontSize="11" Foreground="#666666" HorizontalAlignment="Right" Margin="0,0,8,0" />
+                  <TextBlock Name="TxtAnalyzeRightFiles" Grid.Column="1" Text="Files 0" FontSize="11" Foreground="#666666" HorizontalAlignment="Left" Margin="8,0,0,0" />
+                </Grid>
+              </StackPanel>
+            </Grid>
+          </StackPanel>
+        </Grid>
+
+        <!-- D. TAMPILAN MODE HASIL ANALISA (Beyond Compare Folder to Folder Diff Grid) -->
+        <DockPanel Name="PanelAnalyzeResult" LastChildFill="True" IsVisible="False">
+
+          <!-- Header Tabel Perbandingan (Name | Size | Modified) persis Beyond Compare -->
+          <Border DockPanel.Dock="Top" Background="#E5F1FB" BorderBrush="#C2D6EC" BorderThickness="0,0,0,1" Height="26" Padding="6,2">
+            <Grid ColumnDefinitions="*,36,*">
+              <!-- Header Sisi Kiri -->
+              <Grid Grid.Column="0" ColumnDefinitions="*,90,150">
+                <TextBlock Grid.Column="0" Text="Name" FontSize="11.5" FontWeight="SemiBold" Foreground="#333333" VerticalAlignment="Center" Margin="6,0" />
+                <TextBlock Grid.Column="1" Text="Size" FontSize="11.5" FontWeight="SemiBold" Foreground="#333333" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,8,0" />
+                <TextBlock Grid.Column="2" Text="Modified" FontSize="11.5" FontWeight="SemiBold" Foreground="#333333" VerticalAlignment="Center" TextAlignment="Center" />
+              </Grid>
+
+              <!-- Header Tengah (Pemisah / Status) -->
+              <TextBlock Grid.Column="1" Text="" FontSize="11" />
+
+              <!-- Header Sisi Kanan -->
+              <Grid Grid.Column="2" ColumnDefinitions="*,90,150">
+                <TextBlock Grid.Column="0" Text="Name" FontSize="11.5" FontWeight="SemiBold" Foreground="#333333" VerticalAlignment="Center" Margin="6,0" />
+                <TextBlock Grid.Column="1" Text="Size" FontSize="11.5" FontWeight="SemiBold" Foreground="#333333" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,8,0" />
+                <TextBlock Grid.Column="2" Text="Modified" FontSize="11.5" FontWeight="SemiBold" Foreground="#333333" VerticalAlignment="Center" TextAlignment="Center" />
+              </Grid>
+            </Grid>
+          </Border>
+
+          <!-- Status Bar Ringkasan di Bawah -->
+          <Border DockPanel.Dock="Bottom" Background="#F2F5F8" BorderBrush="#D8DFE8" BorderThickness="0,1,0,0" Padding="12,6">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Name="TxtAnalyzeSummary" Grid.Column="0" Text="Analysis complete." FontSize="11.5" Foreground="#333333" VerticalAlignment="Center" Margin="4,0,0,0" TextTrimming="CharacterEllipsis" />
+              <TextBlock Name="TxtAnalyzeDetails" Grid.Column="1" Text="" FontSize="11.5" FontWeight="SemiBold" Foreground="#2B6CB0" VerticalAlignment="Center" />
+            </Grid>
+          </Border>
+
+          <!-- Area Konten: List Perbandingan di Atas & Panel Proses Transfer / Log di Bawah -->
+          <Grid RowDefinitions="*,Auto,145">
+
+            <!-- Area Tree Hasil Analisa dengan Footer Toolbar Expand/Collapse tepat di atas Transfer Queue -->
+            <DockPanel Grid.Row="0" LastChildFill="True">
+
+              <!-- Toolbar Expand / Collapse tepat di atas Transfer Queue -->
+              <Border DockPanel.Dock="Bottom" Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="0,1,0,0" Padding="8,4">
+                <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                  <Button Content="Expand All" Click="OnExpandAllFoldersClick" Height="22" FontSize="11" Padding="8,1" Background="#FFFFFF" BorderBrush="#C5CCD6" BorderThickness="1" CornerRadius="2" />
+                  <Button Content="Collapse All" Click="OnCollapseAllFoldersClick" Height="22" FontSize="11" Padding="8,1" Background="#FFFFFF" BorderBrush="#C5CCD6" BorderThickness="1" CornerRadius="2" />
+                </StackPanel>
+              </Border>
+
+              <!-- Daftar File & Folder Hasil Analisa (Hierarchical Folder to Folder ListBox) -->
+              <ListBox Name="ListAnalyzeActions" Background="#FFFFFF" BorderThickness="0" Padding="0" DoubleTapped="OnListAnalyzeDoubleTapped">
+            <ListBox.Styles>
+              <Style Selector="ListBoxItem">
+                <Setter Property="Padding" Value="4,2.5" />
+                <Setter Property="BorderBrush" Value="#F0F0F0" />
+                <Setter Property="BorderThickness" Value="0,0,0,1" />
+              </Style>
+              <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+                <Setter Property="Background" Value="#CCE8FF" />
+              </Style>
+            </ListBox.Styles>
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <Grid ColumnDefinitions="*,36,*" VerticalAlignment="Center" Background="Transparent">
+                  <Grid.ContextMenu>
+                    <ContextMenu>
+                      <!-- Copy Left to Right -->
+                      <MenuItem Header="Copy Left to Right" Click="OnContextCopyLeftToRightClick">
+                        <MenuItem.Icon>
+                          <Image Source="{SvgImage /Assets/Icons/dirltor.svg}" Width="16" Height="16" />
+                        </MenuItem.Icon>
+                      </MenuItem>
+
+                      <!-- Copy Right to Left -->
+                      <MenuItem Header="Copy Right to Left" Click="OnContextCopyRightToLeftClick">
+                        <MenuItem.Icon>
+                          <Image Source="{SvgImage /Assets/Icons/dirrtol.svg}" Width="16" Height="16" />
+                        </MenuItem.Icon>
+                      </MenuItem>
+
+                      <Separator />
+
+                      <!-- Delete -->
+                      <MenuItem Header="Delete..." Click="OnContextDeleteClick">
+                        <MenuItem.Icon>
+                          <Image Source="{SvgImage /Assets/Icons/delete.svg}" Width="16" Height="16" />
+                        </MenuItem.Icon>
+                      </MenuItem>
+
+                      <!-- Rename -->
+                      <MenuItem Header="Rename..." Click="OnContextRenameClick">
+                        <MenuItem.Icon>
+                          <Image Source="{SvgImage /Assets/Icons/rename.svg}" Width="16" Height="16" />
+                        </MenuItem.Icon>
+                      </MenuItem>
+
+                      <Separator />
+
+                      <!-- Exclude -->
+                      <MenuItem Header="Exclude">
+                        <MenuItem.Icon>
+                          <Image Source="{SvgImage /Assets/Icons/filter.svg}" Width="16" Height="16" />
+                        </MenuItem.Icon>
+                        <MenuItem Header="Exclude by Name (all folders/files with this name)" Click="OnContextExcludeByNameClick" />
+                        <MenuItem Header="Exclude exact Path" Click="OnContextExcludeByPathClick" />
+                      </MenuItem>
+
+                      <Separator />
+
+                      <!-- Properties -->
+                      <MenuItem Header="Properties" Click="OnContextPropertiesClick">
+                        <MenuItem.Icon>
+                          <Image Source="{SvgImage /Assets/Icons/settings.svg}" Width="16" Height="16" />
+                        </MenuItem.Icon>
+                      </MenuItem>
+                    </ContextMenu>
+                  </Grid.ContextMenu>
+
+                  <!-- Baris Item Sisi Kiri -->
+                  <Grid Grid.Column="0" ColumnDefinitions="*,90,150" VerticalAlignment="Center">
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="{Binding IndentMargin}" Spacing="4" VerticalAlignment="Center">
+                      <!-- Tombol Expand / Reduce Folder (Beyond Compare style) -->
+                      <Button Width="16" Height="16" Padding="0" Margin="0,0,2,0" Background="Transparent" BorderThickness="0"
+                              IsVisible="{Binding IsDirectory}" Click="OnToggleFolderExpandClick" Tag="{Binding}"
+                              ToolTip.Tip="Expand / Collapse folder" Cursor="Hand">
+                        <TextBlock Text="{Binding ExpandGlyph}" FontSize="10" FontWeight="Bold" Foreground="#555555" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                      </Button>
+                      <Border Width="16" Height="16" IsVisible="{Binding !IsDirectory}" Margin="0,0,2,0" />
+
+                      <!-- Folder Icons (Ungu: Orphan, Merah: Diff, Kuning: Same) -->
+                      <Image Source="{SvgImage /Assets/Icons/folder_purple.svg}" Width="16" Height="16" VerticalAlignment="Center" IsVisible="{Binding IsOrphanFolder}" />
+                      <Image Source="{SvgImage /Assets/Icons/folder_diff.svg}" Width="16" Height="16" VerticalAlignment="Center" IsVisible="{Binding IsDiffFolder}" />
+                      <Image Source="{SvgImage /Assets/Icons/folder_same.svg}" Width="16" Height="16" VerticalAlignment="Center" IsVisible="{Binding IsSameFolder}" />
+                      <!-- File Icons (Ungu: Orphan, Merah: Diff, Abu-abu: Same) -->
+                      <Image Source="{SvgImage /Assets/Icons/file_purple.svg}" Width="14" Height="14" VerticalAlignment="Center" IsVisible="{Binding IsOrphanFile}" />
+                      <Image Source="{SvgImage /Assets/Icons/file_diff.svg}" Width="14" Height="14" VerticalAlignment="Center" IsVisible="{Binding IsDiffFile}" />
+                      <Image Source="{SvgImage /Assets/Icons/file_same.svg}" Width="14" Height="14" VerticalAlignment="Center" IsVisible="{Binding IsSameFile}" />
+                      <TextBlock Text="{Binding LeftName}" FontSize="11.5" Foreground="{Binding NameForeground}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <TextBlock Grid.Column="1" Text="{Binding LeftSize}" FontSize="11" Foreground="{Binding NameForeground}" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,8,0" />
+                    <TextBlock Grid.Column="2" Text="{Binding LeftDate}" FontSize="11" Foreground="{Binding NameForeground}" VerticalAlignment="Center" TextAlignment="Center" />
+                  </Grid>
+
+                  <!-- Kolom Tengah (Action Glyphs: Panah Emas / Tanda Tanya Hitam) -->
+                  <Border Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding ActionGlyph}" Foreground="{Binding ActionBrush}" FontSize="13.5" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip.Tip="{Binding ActionLabel}" />
+                  </Border>
+
+                  <!-- Baris Item Sisi Kanan -->
+                  <Grid Grid.Column="2" ColumnDefinitions="*,90,150" VerticalAlignment="Center">
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="{Binding IndentMargin}" Spacing="4" VerticalAlignment="Center">
+                      <!-- Spacer 16px agar posisi ikon sisi kanan presisi simetris dengan sisi kiri -->
+                      <Border Width="16" Height="16" Margin="0,0,2,0" />
+
+                      <!-- Folder Icons (Ungu: Orphan, Merah: Diff, Kuning: Same) -->
+                      <Image Source="{SvgImage /Assets/Icons/folder_purple.svg}" Width="16" Height="16" VerticalAlignment="Center" IsVisible="{Binding IsOrphanFolder}" />
+                      <Image Source="{SvgImage /Assets/Icons/folder_diff.svg}" Width="16" Height="16" VerticalAlignment="Center" IsVisible="{Binding IsDiffFolder}" />
+                      <Image Source="{SvgImage /Assets/Icons/folder_same.svg}" Width="16" Height="16" VerticalAlignment="Center" IsVisible="{Binding IsSameFolder}" />
+                      <!-- File Icons (Ungu: Orphan, Merah: Diff, Abu-abu: Same) -->
+                      <Image Source="{SvgImage /Assets/Icons/file_purple.svg}" Width="14" Height="14" VerticalAlignment="Center" IsVisible="{Binding IsOrphanFile}" />
+                      <Image Source="{SvgImage /Assets/Icons/file_diff.svg}" Width="14" Height="14" VerticalAlignment="Center" IsVisible="{Binding IsDiffFile}" />
+                      <Image Source="{SvgImage /Assets/Icons/file_same.svg}" Width="14" Height="14" VerticalAlignment="Center" IsVisible="{Binding IsSameFile}" />
+                      <TextBlock Text="{Binding RightName}" FontSize="11.5" Foreground="{Binding NameForeground}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <TextBlock Grid.Column="1" Text="{Binding RightSize}" FontSize="11" Foreground="{Binding NameForeground}" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,8,0" />
+                    <TextBlock Grid.Column="2" Text="{Binding RightDate}" FontSize="11" Foreground="{Binding NameForeground}" VerticalAlignment="Center" TextAlignment="Center" />
+                  </Grid>
+
+                </Grid>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </DockPanel>
+
+        <!-- Splitter Pemisah yang bisa di-drag naik/turun -->
+          <GridSplitter Grid.Row="1" Height="4" Background="#D8DFE8" ResizeDirection="Rows" />
+
+          <!-- Row 2: TABEL ANTREAN PROSES TRANSFER DATA (1 Row = 1 Proses Copy) -->
+          <Border Grid.Row="2" Background="#FFFFFF" BorderBrush="#D8DFE8" BorderThickness="0,1,0,0">
+            <DockPanel LastChildFill="True">
+
+              <!-- Header Bar Atas: Judul Antrean & Kontrol Global (Clear Finished, etc.) -->
+              <Border DockPanel.Dock="Top" Background="#EFF3F8" BorderBrush="#D8DFE8" BorderThickness="0,0,0,1" Padding="8,4">
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                  <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                    <TextBlock Text="⚡" FontSize="12" VerticalAlignment="Center" />
+                    <TextBlock Text="Transfer Queue (Tasks)" FontSize="11" FontWeight="SemiBold" Foreground="#334155" VerticalAlignment="Center" />
+                    <TextBlock Name="TxtQueueSummary" Text="(0 tasks)" FontSize="10.5" Foreground="#64748B" VerticalAlignment="Center" />
+                  </StackPanel>
+
+                  <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                    <Button Content="Clear Completed" Click="OnClearCompletedTasksClick" Height="22" FontSize="10.5" Padding="8,1"
+                            Background="#FFFFFF" Foreground="#475569" BorderBrush="#CBD5E1" BorderThickness="1" CornerRadius="2" />
+                  </StackPanel>
+                </Grid>
+              </Border>
+
+              <!-- Header Kolom Tabel: Job | Task / Item | Status | Progress | Details | Actions -->
+              <Border DockPanel.Dock="Top" Background="#F1F5F9" BorderBrush="#E2E8F0" BorderThickness="0,0,0,1" Height="24" Padding="6,2">
+                <Grid ColumnDefinitions="110,180,90,210,*,170">
+                  <TextBlock Grid.Column="0" Text="Job" FontSize="11" FontWeight="SemiBold" Foreground="#475569" VerticalAlignment="Center" Margin="4,0" />
+                  <TextBlock Grid.Column="1" Text="Task / Item" FontSize="11" FontWeight="SemiBold" Foreground="#475569" VerticalAlignment="Center" Margin="4,0" />
+                  <TextBlock Grid.Column="2" Text="Status" FontSize="11" FontWeight="SemiBold" Foreground="#475569" VerticalAlignment="Center" />
+                  <TextBlock Grid.Column="3" Text="Progress" FontSize="11" FontWeight="SemiBold" Foreground="#475569" VerticalAlignment="Center" />
+                  <TextBlock Grid.Column="4" Text="Details / Current File" FontSize="11" FontWeight="SemiBold" Foreground="#475569" VerticalAlignment="Center" />
+                  <TextBlock Grid.Column="5" Text="Actions" FontSize="11" FontWeight="SemiBold" Foreground="#475569" VerticalAlignment="Center" TextAlignment="Center" />
+                </Grid>
+              </Border>
+
+              <!-- Daftar Baris Tugas Transfer (1 Baris = 1 Proses Copy) -->
+              <ListBox Name="ListTransferTasks" Background="#FFFFFF" BorderThickness="0" Padding="0">
+                <ListBox.Styles>
+                  <Style Selector="ListBoxItem">
+                    <Setter Property="Padding" Value="6,4" />
+                    <Setter Property="BorderBrush" Value="#F1F5F9" />
+                    <Setter Property="BorderThickness" Value="0,0,0,1" />
+                  </Style>
+                  <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+                    <Setter Property="Background" Value="#F0F7FF" />
+                  </Style>
+                </ListBox.Styles>
+                <ListBox.ItemTemplate>
+                  <DataTemplate>
+                    <Grid ColumnDefinitions="110,180,90,210,*,170" VerticalAlignment="Center">
+
+                      <!-- Kolom 0: Nama Job -->
+                      <Border Grid.Column="0" VerticalAlignment="Center" Margin="4,0">
+                        <TextBlock Text="{Binding JobName}" FontSize="11.5" FontWeight="SemiBold" Foreground="#2563EB" TextTrimming="CharacterEllipsis" />
+                      </Border>
+
+                      <!-- Kolom 1: Nama Item & Arah Copy -->
+                      <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2" Margin="4,0">
+                        <TextBlock Text="{Binding Name}" FontSize="11.5" FontWeight="SemiBold" Foreground="#1E293B" TextTrimming="CharacterEllipsis" />
+                        <TextBlock Text="{Binding Direction}" FontSize="10" Foreground="#64748B" TextTrimming="CharacterEllipsis" />
+                      </StackPanel>
+
+                      <!-- Kolom 2: Status Badge -->
+                      <Border Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" CornerRadius="3" Padding="6,2" Background="#F1F5F9">
+                        <TextBlock Text="{Binding StatusText}" FontSize="10.5" FontWeight="SemiBold" Foreground="{Binding StatusBrush}" TextTrimming="CharacterEllipsis" />
+                      </Border>
+
+                      <!-- Kolom 3: Progress Bar + Persentase (Pasti di Sebelah Kanan Bar, Tidak Ketimpa) -->
+                      <DockPanel Grid.Column="3" VerticalAlignment="Center" Margin="4,0,12,0">
+                        <TextBlock DockPanel.Dock="Right" Text="{Binding ProgressText}" Width="40" TextAlignment="Right"
+                                   FontSize="11" FontWeight="SemiBold" Foreground="#334155" VerticalAlignment="Center" Margin="8,0,0,0" />
+                        <ProgressBar Value="{Binding ProgressPercent}" Minimum="0" Maximum="100" Height="10"
+                                     Foreground="{Binding StatusBrush}" Background="#E2E8F0" CornerRadius="3" VerticalAlignment="Center" />
+                      </DockPanel>
+
+                      <!-- Kolom 4: Keterangan File & Kecepatan -->
+                      <StackPanel Grid.Column="4" VerticalAlignment="Center" Spacing="2" Margin="4,0">
+                        <TextBlock Text="{Binding CurrentFileName}" FontSize="11" Foreground="#1E293B" TextTrimming="CharacterEllipsis" />
+                        <TextBlock Text="{Binding StatsText}" FontSize="10" Foreground="#64748B" TextTrimming="CharacterEllipsis" />
+                      </StackPanel>
+
+                      <!-- Kolom 5: Tombol Aksi (Pause, Resume, Stop, Retry, Delete) -->
+                      <StackPanel Grid.Column="5" Orientation="Horizontal" Spacing="4" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <!-- Pause -->
+                        <Button Content="⏸ Pause" Click="OnTaskPauseClick" Tag="{Binding}" IsVisible="{Binding CanPause}"
+                                Height="22" FontSize="10" Padding="6,1" Background="#FEF3C7" Foreground="#B45309" BorderBrush="#FCD34D" BorderThickness="1" CornerRadius="2" ToolTip.Tip="Pause this transfer" />
+
+                        <!-- Resume -->
+                        <Button Content="▶ Resume" Click="OnTaskResumeClick" Tag="{Binding}" IsVisible="{Binding CanResume}"
+                                Height="22" FontSize="10" Padding="6,1" Background="#DCFCE7" Foreground="#15803D" BorderBrush="#86EFAC" BorderThickness="1" CornerRadius="2" ToolTip.Tip="Resume this transfer" />
+
+                        <!-- Stop -->
+                        <Button Content="⏹ Stop" Click="OnTaskStopClick" Tag="{Binding}" IsVisible="{Binding CanStop}"
+                                Height="22" FontSize="10" Padding="6,1" Background="#FEE2E2" Foreground="#B91C1C" BorderBrush="#FCA5A5" BorderThickness="1" CornerRadius="2" ToolTip.Tip="Stop this transfer" />
+
+                        <!-- Retry -->
+                        <Button Content="🔄 Retry" Click="OnTaskRetryClick" Tag="{Binding}" IsVisible="{Binding CanRetry}"
+                                Height="22" FontSize="10" Padding="6,1" Background="#EFF6FF" Foreground="#1D4ED8" BorderBrush="#BFDBFE" BorderThickness="1" CornerRadius="2" ToolTip.Tip="Retry this transfer" />
+
+                        <!-- Delete -->
+                        <Button Content="🗑 Remove" Click="OnTaskDeleteClick" Tag="{Binding}" IsVisible="{Binding CanDelete}"
+                                Height="22" FontSize="10" Padding="6,1" Background="#F8FAFC" Foreground="#64748B" BorderBrush="#CBD5E1" BorderThickness="1" CornerRadius="2" ToolTip.Tip="Remove from list" />
+                      </StackPanel>
+
+                    </Grid>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+
+            </DockPanel>
+          </Border>
+
+        </Grid>
+
+        </DockPanel>
+      </Grid>
+      </DockPanel>
+    </Grid>
+
+    </DockPanel>
+
+    <!-- LOADING OVERLAY MODAL (Solid, Anti-Glitch, In-App Popup) -->
+    <Grid Name="OverlayLoading" Background="#40000000" IsVisible="False">
+      <Border Background="#FFFFFF" BorderBrush="#B4C2D2" BorderThickness="1" CornerRadius="6"
+              Width="390" HorizontalAlignment="Center" VerticalAlignment="Center"
+              BoxShadow="0 8 32 0 #50000000">
+        <Grid RowDefinitions="Auto,Auto">
+          <StackPanel Grid.Row="0" Margin="24,20,24,16" Spacing="12">
+            <TextBlock Name="TxtLoadingTitle" Text="Connecting to server..." FontSize="13" FontWeight="SemiBold" Foreground="#222222" TextTrimming="CharacterEllipsis" />
+            <ProgressBar IsIndeterminate="True" Height="6" CornerRadius="3" Foreground="#2B6CB0" Background="#E2E8F0" />
+            <TextBlock Text="Retrieving network share data, please wait..." FontSize="11" Foreground="#666666" />
+          </StackPanel>
+
+          <Border Grid.Row="1" Background="#EDF1F7" BorderBrush="#D8DFE8" BorderThickness="0,1,0,0" Padding="14,10" CornerRadius="0,0,5,5">
+            <Button Name="BtnCancelLoading" Content="Cancel" Width="80" Height="28" HorizontalAlignment="Right"
+                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    Background="#E2E8F0" Foreground="#333333" FontSize="11.5" CornerRadius="3" />
+          </Border>
+        </Grid>
+      </Border>
+    </Grid>
+
+  </Panel>
+</Window>
